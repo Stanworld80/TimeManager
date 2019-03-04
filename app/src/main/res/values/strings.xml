@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TimeManager</string>
+    <string name="date">Date</string>
+    <string name="day_of_the_week">Day of the week</string>
+    <string name="activite">ACTIVITE</string>
+    <string name="start">Start</string>
+    <string name="historique">Historique</string>
+</resources>
