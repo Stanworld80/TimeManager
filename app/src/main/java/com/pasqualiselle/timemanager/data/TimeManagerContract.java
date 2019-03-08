@@ -15,7 +15,7 @@ public class TimeManagerContract {
 
     public static final class ActivityAndTimeSpentEntry implements BaseColumns {
 
-        /** Name of database table for pets */
+        /** Name of database table for activity_name */
         public final static String TABLE_NAME = "activity_and_time";
 
         /**

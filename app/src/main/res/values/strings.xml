@@ -5,4 +5,6 @@
     <string name="activite">ACTIVITE</string>
     <string name="start">Start</string>
     <string name="historique">Historique</string>
+    <string name="type_your_activity">Type your activity here</string>
+    <string name="type_your_activity_here">Type your activity here</string>
 </resources>

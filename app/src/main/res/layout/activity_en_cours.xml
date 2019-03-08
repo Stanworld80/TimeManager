@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CurrentActivity">
+
+
+    <TextView
+        android:id="@+id/textViewCurrentActiviy"
+        android:layout_width="287dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_activity_name"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="265dp"
+        android:layout_marginEnd="62dp"
+        android:layout_marginRight="62dp"
+        android:layout_marginBottom="17dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Current Activity"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/text_activity_name"
+        android:layout_width="287dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="51dp"
+        android:layout_marginLeft="51dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginRight="51dp"
+        android:layout_marginBottom="273dp"
+        android:elegantTextHeight="true"
+        android:gravity="center"
+        android:text="hello"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textColorHighlight="@android:color/holo_orange_light"
+        android:textSize="24sp" />
+
+
+    </RelativeLayout>
+
+
