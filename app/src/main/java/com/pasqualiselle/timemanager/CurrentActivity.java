@@ -21,6 +21,11 @@ public class CurrentActivity extends AppCompatActivity {
     private boolean running;
     private String mDuration;
     private TextView mTextViewDuration;
+    private long startTime;
+    private long duration;
+    int durationSeconds;
+    int durationMinutes;
+    int durationHours;
 
 
     @Override
@@ -37,8 +42,7 @@ public class CurrentActivity extends AppCompatActivity {
 
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time %s");
-mTextViewDuration = findViewById(R.id.textViewDuration);
-        mTextViewDuration.setText("Duration ");
+
     }
 
     public void startChronometer(View v){
@@ -47,6 +51,7 @@ mTextViewDuration = findViewById(R.id.textViewDuration);
             mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             mChronometer.start();
             running = true;
+           startTime = SystemClock.elapsedRealtime();
         }
 
     }
@@ -58,18 +63,38 @@ mTextViewDuration = findViewById(R.id.textViewDuration);
 
     public void pauseChronometer(View v){
 
+
+
         if(running){
             mChronometer.stop();
             pauseOffset = SystemClock.elapsedRealtime() - mChronometer.getBase();
             running = false;
+
+
+              durationSeconds = (int)(pauseOffset / 1000)% 60;
+             durationMinutes = (int)((pauseOffset/(1000*60))% 60);
+             durationHours = (int)((pauseOffset/(1000*60*60)% 24));
+
+           }
+
+            mTextViewDuration = findViewById(R.id.textViewDuration);
+        if ((durationSeconds < 10) || (durationMinutes < 10)){
+            mTextViewDuration.setText("Duration "+ String.valueOf(durationHours+" 0: " + durationMinutes+
+                    "0: "+durationSeconds));
+
+        }
+            mTextViewDuration.setText("Duration "+ String.valueOf(durationHours+" : " + durationMinutes+
+                    " : "+durationSeconds));
+
         }
 
 
-    }
+
 
     public void resetChronometer(View v){
 
          mChronometer.setBase(SystemClock.elapsedRealtime());
          pauseOffset = 0;
+
     }
 }
