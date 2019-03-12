@@ -1,6 +1,5 @@
 package com.pasqualiselle.timemanager;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,10 +34,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         setCurrentDateAndTime();
         goToCurrentActivity();
 
+        Button historyBtn = findViewById(R.id.history_btn);
+        historyBtn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
 
