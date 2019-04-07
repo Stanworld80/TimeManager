@@ -30,16 +30,16 @@ public class TimeManagerDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create a String that contains the SQL statement to create the pets table
         String SQL_CREATE_TIME_MANAGER_TABLE_ACTIVITIES = "CREATE TABLE "
-                + TimeManagerContract.ActivitiesEntry.TABLE_NAME + " ("
-                + TimeManagerContract.ActivitiesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + TimeManagerContract.ActivitiesEntry.COLUMN_ACTIVITY_NAME + " TEXT NOT NULL);";
+                + TimeManagerContract.ActivityEntry.TABLE_NAME + " ("
+                + TimeManagerContract.ActivityEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " TEXT NOT NULL);";
 
         String SQL_CREATE_TIME_MANAGER_TABLE_INSTANCES = "CREATE TABLE "
-                + TimeManagerContract.InstancesEntry.TABLE_NAME + " ( "
-                + TimeManagerContract.InstancesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + TimeManagerContract.InstancesEntry.COLUMN_ACTIVITY_ID + " INTEGER NOT NULL , "
-                + TimeManagerContract.InstancesEntry.COLUMN_START_TIME + " TEXT NOT NULL , "
-                + TimeManagerContract.InstancesEntry.COLUMN_END_TIME + " TEXT NOT NULL);";
+                + TimeManagerContract.InstanceEntry.TABLE_NAME + " ( "
+                + TimeManagerContract.InstanceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + " INTEGER NOT NULL , "
+                + TimeManagerContract.InstanceEntry.COLUMN_START_TIME + " TEXT NOT NULL , "
+                + TimeManagerContract.InstanceEntry.COLUMN_END_TIME + " TEXT NOT NULL);";
 
         //Execute the SQL statement
         db.execSQL(SQL_CREATE_TIME_MANAGER_TABLE_ACTIVITIES);

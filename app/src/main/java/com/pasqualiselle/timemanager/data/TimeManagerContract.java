@@ -1,5 +1,6 @@
 package com.pasqualiselle.timemanager.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class TimeManagerContract {
@@ -9,11 +10,32 @@ public class TimeManagerContract {
     private TimeManagerContract(){}
 
     /**
+     *  CONTENT_AUTHORITY for URI and ContentProvider usage
+     *
+     */
+    public static final String CONTENT_AUTHORITY = "com.pasqualiselle.timemanager";
+
+
+    /**
+     * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
+     * the content provider.
+     */
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+
+    public static final String PATH_ACTIVITIES = "activities";
+
+    public static final String PATH_INSTANCES  = "instances";
+
+    /**
      * Inner class that defines constant values for the time_manager database table.
      * Each entry in the table represents a single activity and its associated name.
      */
 
-    public static final class ActivitiesEntry implements BaseColumns {
+    public static final class ActivityEntry implements BaseColumns {
+
+        /** The content URI to access the activity data in the provider */
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ACTIVITIES);
 
         /** Name of database table for activities */
         public final static String TABLE_NAME = "activities";
@@ -33,7 +55,10 @@ public class TimeManagerContract {
         public final static String COLUMN_ACTIVITY_NAME ="name";
 
     }
-    public static final class InstancesEntry implements BaseColumns {
+    public static final class InstanceEntry implements BaseColumns {
+
+        /** The content URI to access the instances data in the provider */
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_INSTANCES);
 
         /** Name of database table for instances */
         public final static String TABLE_NAME = "instances";
