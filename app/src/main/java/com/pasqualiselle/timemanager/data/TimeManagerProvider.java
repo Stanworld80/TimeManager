@@ -17,7 +17,7 @@ public class TimeManagerProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query( @NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @androidx.annotation.Nullable @Nullable String[] strings1, @androidx.annotation.Nullable @Nullable String s1) {
+    public Cursor query( @NonNull Uri uri, @Nullable String[] strings, @Nullable String s,  @Nullable String[] strings1, @Nullable String s1) {
         return null;
     }
 
