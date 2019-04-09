@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
@@ -47,11 +48,13 @@ public class CurrentActivity extends AppCompatActivity {
 
     public void startChronometer(View v){
 
+        Button mButtonStart = findViewById(R.id.buttonStart);
+        mButtonStart.setText("Restart");
         if(!running){
             mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             mChronometer.start();
             running = true;
-           startTime = SystemClock.elapsedRealtime();
+            startTime = SystemClock.elapsedRealtime();
         }
 
     }
@@ -62,8 +65,6 @@ public class CurrentActivity extends AppCompatActivity {
     }
 
     public void pauseChronometer(View v){
-
-
 
         if(running){
             mChronometer.stop();
@@ -87,8 +88,6 @@ public class CurrentActivity extends AppCompatActivity {
                     " : "+durationSeconds));
 
         }
-
-
 
 
     public void resetChronometer(View v){
