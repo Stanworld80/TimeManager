@@ -151,7 +151,7 @@ public class TimeManagerProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Insertion is not supported for "+uri);
         }
-        
+
     }
 
     //creating a new method for inserting activity. We are going to use insertActivity() in the Uri insert above
