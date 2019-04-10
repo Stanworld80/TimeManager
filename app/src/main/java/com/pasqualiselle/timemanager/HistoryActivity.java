@@ -4,11 +4,14 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
+import com.pasqualiselle.timemanager.data.TimeManagerCursorAdapter;
 
 public class HistoryActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +27,15 @@ public class HistoryActivity extends AppCompatActivity {
             ll.addView(aHistoricLineTextView, lp);
         }*/
 
-
+        displayDatabaseInfo();
     }
+
     /**
      * Temporary helper method to display information in the onscreen TextView about the state of
      * the ACTIVITIES database.
      */
 
-    private void displayDatabaseInfo(){
+    private void displayDatabaseInfo() {
 
         //projection is just a name for the Columns that we were interested in getting back
         // Define a projection that specifies which columns from the database
@@ -50,6 +54,15 @@ public class HistoryActivity extends AppCompatActivity {
                 null,
                 null
         );
+
+        //Find ListView to populate with the activity name data
+        ListView timeManagerListItemsView = findViewById(R.id.listViewItems);
+
+        //Setup cursor adapter using cursor from_last step
+        TimeManagerCursorAdapter timeManagerCursorAdapter = new TimeManagerCursorAdapter(this,cursor,false);
+
+        //Attach cursor adapter to the Listview
+        timeManagerListItemsView.setAdapter(timeManagerCursorAdapter);
 
 
 
