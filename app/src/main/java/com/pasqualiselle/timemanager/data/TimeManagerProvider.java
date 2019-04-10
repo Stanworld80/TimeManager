@@ -141,11 +141,17 @@ public class TimeManagerProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri,@Nullable ContentValues contentValues) {
 
+        final int match = sUriMatcher.match(uri);
+        switch (match){
 
-
-
-
-        return null;
+            case ACTIVITIES:
+                return insertActivity(uri,contentValues);
+            case INSTANCES:
+                return insertInstance(uri,contentValues);
+            default:
+                throw new IllegalArgumentException("Insertion is not supported for "+uri);
+        }
+        
     }
 
     //creating a new method for inserting activity. We are going to use insertActivity() in the Uri insert above
