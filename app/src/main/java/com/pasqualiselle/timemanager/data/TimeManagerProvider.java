@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 public class TimeManagerProvider extends ContentProvider {
 
@@ -139,7 +140,66 @@ public class TimeManagerProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri,@Nullable ContentValues contentValues) {
+
+
+
+
+
         return null;
+    }
+
+    //creating a new method for inserting activity. We are going to use insertActivity() in the Uri insert above
+    /**
+     * Insert an activity into the database with the given content values. Return the new content URI
+     * for that specific row in the database.
+     */
+
+    private Uri insertActivity(Uri uri, ContentValues values){
+        // TODO: Insert a new activity into the ACTIVITIES database table with the given ContentValues
+        //Get writable database
+        SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
+
+        //Insert the new activity with the given values.Once we have a database object, we can call the insert() method on it,
+        // passing in the ACTIVITY table name and the ContentValues object. The return value is the ID of the new row that was just created,
+        // in the form of a long data type (which can store numbers larger than the int data type).
+
+        long id = database.insert(TimeManagerContract.ActivityEntry.TABLE_NAME, null, values);
+
+        //If the id is -1, then the insertion failed. Logan error and return null
+        if(id == -1){
+
+            Log.e(LOG_TAG, "Failed to insert row for "+uri);
+            return null;
+        }
+
+        //Once we know the ID of the new row in the table,
+        //return the new URI with the ID appended to the end of it
+        return ContentUris.withAppendedId(uri,id);
+
+    }
+
+    private Uri insertInstance(Uri uri, ContentValues values){
+
+        // TODO: Insert a new instance into the intance database table with the given ContentValues
+        //Get writable database
+        SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
+
+        //Insert the new instance with the given values.Once we have a database object, we can call the insert() method on it,
+        // passing in the INSTANCES table name and the ContentValues object. The return value is the ID of the new row that was just created,
+        // in the form of a long data type (which can store numbers larger than the int data type).
+       long id = database.insert(TimeManagerContract.InstanceEntry.TABLE_NAME, null, values);
+
+       //If the id is -1, then the insertion failed. Logan error and return null
+        if(id == -1){
+
+            Log.e(LOG_TAG,"Failed to insert row for "+uri);
+            return null;
+        }
+
+        // Once we know the ID of the new row in the table,
+        // return the new URI with the ID appended to the end of it
+        return ContentUris.withAppendedId(uri,id);
+
     }
 
     @Override
