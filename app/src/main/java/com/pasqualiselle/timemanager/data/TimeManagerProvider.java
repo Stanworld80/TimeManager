@@ -2,9 +2,11 @@ package com.pasqualiselle.timemanager.data;
 
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -53,8 +55,8 @@ public class TimeManagerProvider extends ContentProvider {
         // when a match is found.
         sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES,ACTIVITIES);
         sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES,INSTANCES);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY,TimeManagerContract.PATH_ACTIVITIES+"#",ACTIVITY_ID);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY,TimeManagerContract.PATH_INSTANCES+"#",INSTANCE_ID);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY,TimeManagerContract.PATH_ACTIVITIES+"/#",ACTIVITY_ID);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY,TimeManagerContract.PATH_INSTANCES+"/#",INSTANCE_ID);
 
     }
     /**
@@ -73,10 +75,59 @@ public class TimeManagerProvider extends ContentProvider {
 
     }
 
+    //I did a modificiation here, changed some parameters projection,selection,selectionArgs
     @Nullable
     @Override
-    public Cursor query( @NonNull Uri uri, @Nullable String[] strings, @Nullable String s,  @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query( @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,  @Nullable String[] selectionArgs,
+                         @Nullable String sortOrder) {
+        //Get readable database
+        SQLiteDatabase database = mTimeManagerDbHelper.getReadableDatabase();
+
+        //This cursor will hold the result of the query
+        Cursor cursor;
+
+        //Figure out if the URI matcher can match the URI to a specific code
+        int match = sUriMatcher.match(uri);
+
+        switch(match){
+
+            case ACTIVITIES:
+                //For the ACTIVITIES code, query the ACTIVITIES table directly with the give
+                //projection,selection,selection arguments,and sort order.The cursor
+                //could contain multiple rows of the pets table
+                // TODO: Perform database query on ACTIVITIES table
+
+                cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection,selection,selectionArgs,
+                        null,null,sortOrder);
+                break;
+            case INSTANCES:
+                cursor = database.query(TimeManagerContract.InstanceEntry.TABLE_NAME, projection,selection,selectionArgs,
+                       null,null,sortOrder);
+                break;
+
+            case ACTIVITY_ID:
+                // For the ACTIVITY_ID code, extract out the ID from the URI.
+                // For an example URI such as "content://com.example.android.activities/activities/3",
+                // the selection will be "_id=?" and the selection argument will be a
+                // String array containing the actual ID of 3 in this case.
+                //
+                // For every "?" in the selection, we need to have an element in the selection
+                // arguments that will fill in the "?". Since we have 1 question mark in the
+                // selection, we have 1 String in the selection arguments' String array.
+                selection = TimeManagerContract.ActivityEntry._ID + "=?";
+                selectionArgs =new String[]{String.valueOf(ContentUris.parseId(uri))};
+
+                // This will perform a query on the ACTIVITIES table where the _id equals 3 to return a
+                // Cursor containing that row of the table.
+                cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME,projection,selection,selectionArgs,
+                        null,null,sortOrder);
+                break;
+            default:
+                throw new IllegalArgumentException("Cannot query unknown URI "+ uri);
+
+        }
+        return cursor;
+
     }
 
     @Nullable
