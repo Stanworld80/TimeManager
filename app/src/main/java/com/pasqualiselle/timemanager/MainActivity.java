@@ -1,18 +1,24 @@
 package com.pasqualiselle.timemanager;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.pasqualiselle.timemanager.data.TimeManagerContract;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -102,6 +108,48 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    /**
+     * Get user input from editor and save new activity into database.
+     *
+     */
+    private void insertActivity(){
+
+        // Read from input fields
+        // Use trim to eliminate leading or trailing white space
+        String activityName = mEditActivity.getText().toString().trim();
+
+        // Create a ContentValues object where column names are the keys,
+        // and pet attributes from the editor are the values.
+        ContentValues values = new ContentValues();
+        values.put(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME, activityName);
+
+        //Insert a new activity into TimeManagerProvider, returning the content URI for the new activity
+
+        Uri newUri;
+        try{
+            newUri = getContentResolver().insert(TimeManagerContract.ActivityEntry.CONTENT_URI,values);
+        }
+        catch (IllegalArgumentException e){
+
+            Log.e("MainActivity","I found an exception while trying t oinsert values : "+ e.getMessage());
+            newUri = null;
+        }
+        //Show a toast message depending on whether or not the insertion was successful
+        if(newUri == null){
+
+            //If the new content URI is null, then there was an error with insertion
+            Toast.makeText(this,getString(R.string.editor_insert_activity_failed),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+
+            //Otherwise, the insertion was successful and we can display a toast
+            Toast.makeText(this,getString(R.string.editor_insert_activity_successful),
+                    Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
