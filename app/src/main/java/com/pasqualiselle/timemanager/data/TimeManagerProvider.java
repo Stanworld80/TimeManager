@@ -15,7 +15,7 @@ import android.util.Log;
 public class TimeManagerProvider extends ContentProvider {
 
     //Since we’ll be logging multiple times throughout this file, it would be ideal to create a log tag
-    // as a global constant variable, so all log messages from the PetProvider will have
+    // as a global constant variable, so all log messages from the TimemanagerProvider will have
     // the same log tag identifier when you are reading the system logs.
     /**
      * Tag for the log messages
