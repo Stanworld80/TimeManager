@@ -11,5 +11,5 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:text="Activity Name"
-        android:textAppeareance="?android:attr/textAppearanceLarge"/>
+        android:textSize="30sp"/>
 </LinearLayout>

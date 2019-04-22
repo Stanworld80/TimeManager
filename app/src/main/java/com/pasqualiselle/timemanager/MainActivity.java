@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
    private boolean running;
 
     EditText mEditActivity;
+    String mActivityName;
 
     private SharedPreferences mPreferences;
     public static final String PREF_KEY_ACTIVITY_NAMES = "PREF_KEY_ACTIVITY_NAMES";
@@ -97,11 +98,17 @@ public class MainActivity extends AppCompatActivity {
 
                         mEditActivity = findViewById(R.id.editTextAcitivity);
                         //to Save the input activity name and store it in preferences
-                        String activity_Name = mEditActivity.getText().toString();
+                         mActivityName = mEditActivity.getText().toString();
+
+                        insertActivity();
                         mPreferences = getSharedPreferences(PREF_KEY_ACTIVITY_NAMES,MODE_PRIVATE);
-                        mPreferences.edit().putString(PREF_KEY_ACTIVITY_NAME_NUMBER1,activity_Name).apply();
+                        mPreferences.edit().putString(PREF_KEY_ACTIVITY_NAME_NUMBER1,mActivityName).apply();
+
+
+
                         Intent intent = new Intent(MainActivity.this, CurrentActivity.class);
                         startActivityForResult(intent,CURRENT_ACTIVITY_REQUEST_CODE);
+
 
                     }
                 });
@@ -116,15 +123,15 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     private void insertActivity(){
-
+        mEditActivity = findViewById(R.id.editTextAcitivity);
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
-        String activityName = mEditActivity.getText().toString().trim();
+        mActivityName = mEditActivity.getText().toString().trim();
 
         // Create a ContentValues object where column names are the keys,
         // and pet attributes from the editor are the values.
         ContentValues values = new ContentValues();
-        values.put(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME, activityName);
+        values.put(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME, mActivityName);
 
         //Insert a new activity into TimeManagerProvider, returning the content URI for the new activity
 
