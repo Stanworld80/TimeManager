@@ -28,13 +28,11 @@ import static java.text.DateFormat.getTimeInstance;
 
 public class MainActivity extends AppCompatActivity {
 
-
     public static final int CURRENT_ACTIVITY_REQUEST_CODE = 42;
-
     private Chronometer mChronometer;
     private long pauseOffset;
     private long startTime;
-   private boolean running;
+    private boolean running;
 
     EditText mEditActivity;
     String mActivityName;
@@ -45,12 +43,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         setCurrentDateAndTime();
         goToCurrentActivity();
+        setHistoryBtn();
 
+    }
+
+    /**
+     * Setting the "history button" to go on historyActivity when clicking
+     */
+    public void setHistoryBtn() {
         Button historyBtn = findViewById(R.id.history_btn);
         historyBtn.setOnClickListener(
                 new View.OnClickListener() {
@@ -61,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
-
-
-
-
-
-
+    /**
+     * Setting the "Start Button" to go on the current activity when clicking
+     * Setting the EditActivityText view to enable or disable the startbutton depending if the text
+     * is empty or not
+     */
 
     public void goToCurrentActivity() {
         final Button mStartBtn;
@@ -80,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         mEditActivity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -90,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 mStartBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -98,21 +102,19 @@ public class MainActivity extends AppCompatActivity {
 
                         mEditActivity = findViewById(R.id.editTextAcitivity);
                         //to Save the input activity name and store it in preferences
-                         mActivityName = mEditActivity.getText().toString();
+                        mActivityName = mEditActivity.getText().toString();
 
                         insertActivity();
-                        mPreferences = getSharedPreferences(PREF_KEY_ACTIVITY_NAMES,MODE_PRIVATE);
-                        mPreferences.edit().putString(PREF_KEY_ACTIVITY_NAME_NUMBER1,mActivityName).apply();
-
+                        mPreferences = getSharedPreferences(PREF_KEY_ACTIVITY_NAMES, MODE_PRIVATE);
+                        mPreferences.edit().putString(PREF_KEY_ACTIVITY_NAME_NUMBER1, mActivityName).apply();
 
 
                         Intent intent = new Intent(MainActivity.this, CurrentActivity.class);
-                        startActivityForResult(intent,CURRENT_ACTIVITY_REQUEST_CODE);
+                        startActivityForResult(intent, CURRENT_ACTIVITY_REQUEST_CODE);
 
 
                     }
                 });
-
             }
         });
 
@@ -120,9 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Get user input from editor and save new activity into database.
-     *
      */
-    private void insertActivity(){
+    private void insertActivity() {
         mEditActivity = findViewById(R.id.editTextAcitivity);
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
@@ -136,39 +137,46 @@ public class MainActivity extends AppCompatActivity {
         //Insert a new activity into TimeManagerProvider, returning the content URI for the new activity
 
         Uri newUri;
-        try{
-            newUri = getContentResolver().insert(TimeManagerContract.ActivityEntry.CONTENT_URI,values);
-        }
-        catch (IllegalArgumentException e){
+        try {
+            newUri = getContentResolver().insert(TimeManagerContract.ActivityEntry.CONTENT_URI, values);
+        } catch (IllegalArgumentException e) {
 
-            Log.e("MainActivity","I found an exception while trying t oinsert values : "+ e.getMessage());
+            Log.e("MainActivity", "I found an exception while trying t oinsert values : " + e.getMessage());
             newUri = null;
         }
         //Show a toast message depending on whether or not the insertion was successful
-        if(newUri == null){
+        if (newUri == null) {
 
             //If the new content URI is null, then there was an error with insertion
-            Toast.makeText(this,getString(R.string.editor_insert_activity_failed),
+            Toast.makeText(this, getString(R.string.editor_insert_activity_failed),
                     Toast.LENGTH_SHORT).show();
         } else {
 
             //Otherwise, the insertion was successful and we can display a toast
-            Toast.makeText(this,getString(R.string.editor_insert_activity_successful),
+            Toast.makeText(this, getString(R.string.editor_insert_activity_successful),
                     Toast.LENGTH_SHORT).show();
         }
 
 
     }
 
-
+    /**
+     *  setting the Date in the textView_day_of_the_week View
+     *  and set a dynamic Time in the  text_view_date View
+     */
     public void setCurrentDateAndTime() {
-
+        // setting the First line of the date : exemple : "lundi 22 avril 2019"
+        // using a Calendar object
         Calendar calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-
         TextView textViewDate = findViewById(R.id.textView_day_of_the_week);
         textViewDate.setText(currentDate);
 
+
+        /* setting the second line of the date with the current Time , example : 03:44:25
+         using "System.currentTimeMillis();" to get the system time in milliseconds then
+         format it using  a SimpleDateFormat Object
+        */
         Thread t = new Thread() {
             @Override
             public void run() {
@@ -180,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 TextView tdate = findViewById(R.id.text_view_date);
                                 long date = System.currentTimeMillis();
-                                SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss a");
+                                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
                                 String dateString = sdf.format(date);
                                 tdate.setText(dateString);
                             }
@@ -196,4 +204,3 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
-
