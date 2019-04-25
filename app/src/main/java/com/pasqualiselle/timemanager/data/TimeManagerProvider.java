@@ -33,11 +33,9 @@ public class TimeManagerProvider extends ContentProvider {
     private static final int INSTANCES = 200;
 
 
-
     /**
      * URI matcher code for the content URI for a single ACTIVITY in the ACTIVITIES table
      * URI matcher code for the content URI for a single INSTANCE in the INSTANCES table
-     *
      */
     private static final int ACTIVITY_ID = 101;
     private static final int INSTANCE_ID = 201;
@@ -49,15 +47,16 @@ public class TimeManagerProvider extends ContentProvider {
      */
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     // Static initializer. This is run the first time anything is called from this class.
     static {
         // The calls to addURI() go here, for all of the content URI patterns that the provider
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES,ACTIVITIES);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES,INSTANCES);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY,TimeManagerContract.PATH_ACTIVITIES+"/#",ACTIVITY_ID);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY,TimeManagerContract.PATH_INSTANCES+"/#",INSTANCE_ID);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES, ACTIVITIES);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES, INSTANCES);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES + "/#", ACTIVITY_ID);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES + "/#", INSTANCE_ID);
 
     }
     /**
@@ -76,11 +75,11 @@ public class TimeManagerProvider extends ContentProvider {
 
     }
 
-    //I did a modificiation here, changed some parameters projection,selection,selectionArgs
+    //I did a modification here, changed some parameters projection,selection,selectionArgs
     @Nullable
     @Override
-    public Cursor query( @NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,  @Nullable String[] selectionArgs,
-                         @Nullable String sortOrder) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs,
+                        @Nullable String sortOrder) {
         //Get readable database
         SQLiteDatabase database = mTimeManagerDbHelper.getReadableDatabase();
 
@@ -90,7 +89,7 @@ public class TimeManagerProvider extends ContentProvider {
         //Figure out if the URI matcher can match the URI to a specific code
         int match = sUriMatcher.match(uri);
 
-        switch(match){
+        switch (match) {
 
             case ACTIVITIES:
                 //For the ACTIVITIES code, query the ACTIVITIES table directly with the give
@@ -98,12 +97,12 @@ public class TimeManagerProvider extends ContentProvider {
                 //could contain multiple rows of the pets table
                 // TODO: Perform database query on ACTIVITIES table
 
-                cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection,selection,selectionArgs,
-                        null,null,sortOrder);
+                cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
             case INSTANCES:
-                cursor = database.query(TimeManagerContract.InstanceEntry.TABLE_NAME, projection,selection,selectionArgs,
-                       null,null,sortOrder);
+                cursor = database.query(TimeManagerContract.InstanceEntry.TABLE_NAME, projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
 
             case ACTIVITY_ID:
@@ -116,15 +115,15 @@ public class TimeManagerProvider extends ContentProvider {
                 // arguments that will fill in the "?". Since we have 1 question mark in the
                 // selection, we have 1 String in the selection arguments' String array.
                 selection = TimeManagerContract.ActivityEntry._ID + "=?";
-                selectionArgs =new String[]{String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 // This will perform a query on the ACTIVITIES table where the _id equals 3 to return a
                 // Cursor containing that row of the table.
-                cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME,projection,selection,selectionArgs,
-                        null,null,sortOrder);
+                cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
             default:
-                throw new IllegalArgumentException("Cannot query unknown URI "+ uri);
+                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
 
         }
         return cursor;
@@ -139,28 +138,29 @@ public class TimeManagerProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(@NonNull Uri uri,@Nullable ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
 
         final int match = sUriMatcher.match(uri);
-        switch (match){
+        switch (match) {
 
             case ACTIVITIES:
-                return insertActivity(uri,contentValues);
+                return insertActivity(uri, contentValues);
             case INSTANCES:
-                return insertInstance(uri,contentValues);
+                return insertInstance(uri, contentValues);
             default:
-                throw new IllegalArgumentException("Insertion is not supported for "+uri);
+                throw new IllegalArgumentException("Insertion is not supported for " + uri);
         }
 
     }
 
     //creating a new method for inserting activity. We are going to use insertActivity() in the Uri insert above
+
     /**
      * Insert an activity into the database with the given content values. Return the new content URI
      * for that specific row in the database.
      */
 
-    private Uri insertActivity(Uri uri, ContentValues values){
+    private Uri insertActivity(Uri uri, ContentValues values) {
         // TODO: Insert a new activity into the ACTIVITIES database table with the given ContentValues
         //Get writable database
         SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
@@ -172,19 +172,19 @@ public class TimeManagerProvider extends ContentProvider {
         long id = database.insert(TimeManagerContract.ActivityEntry.TABLE_NAME, null, values);
 
         //If the id is -1, then the insertion failed. Logan error and return null
-        if(id == -1){
+        if (id == -1) {
 
-            Log.e(LOG_TAG, "Failed to insert row for "+uri);
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
 
         //Once we know the ID of the new row in the table,
         //return the new URI with the ID appended to the end of it
-        return ContentUris.withAppendedId(uri,id);
+        return ContentUris.withAppendedId(uri, id);
 
     }
 
-    private Uri insertInstance(Uri uri, ContentValues values){
+    private Uri insertInstance(Uri uri, ContentValues values) {
 
         // TODO: Insert a new instance into the intance database table with the given ContentValues
         //Get writable database
@@ -193,23 +193,23 @@ public class TimeManagerProvider extends ContentProvider {
         //Insert the new instance with the given values.Once we have a database object, we can call the insert() method on it,
         // passing in the INSTANCES table name and the ContentValues object. The return value is the ID of the new row that was just created,
         // in the form of a long data type (which can store numbers larger than the int data type).
-       long id = database.insert(TimeManagerContract.InstanceEntry.TABLE_NAME, null, values);
+        long id = database.insert(TimeManagerContract.InstanceEntry.TABLE_NAME, null, values);
 
-       //If the id is -1, then the insertion failed. Logan error and return null
-        if(id == -1){
+        //If the id is -1, then the insertion failed. Logan error and return null
+        if (id == -1) {
 
-            Log.e(LOG_TAG,"Failed to insert row for "+uri);
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
 
         // Once we know the ID of the new row in the table,
         // return the new URI with the ID appended to the end of it
-        return ContentUris.withAppendedId(uri,id);
+        return ContentUris.withAppendedId(uri, id);
 
     }
 
     @Override
-    public int delete( @NonNull Uri uri,  @Nullable String s, @Nullable String[] strings) {
+    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
         return 0;
     }
 

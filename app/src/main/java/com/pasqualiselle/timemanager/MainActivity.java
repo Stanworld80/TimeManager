@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         mActivityName = mEditActivity.getText().toString().trim();
 
         // Create a ContentValues object where column names are the keys,
-        // and pet attributes from the editor are the values.
+        // and activity is the values.
         ContentValues values = new ContentValues();
         values.put(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME, mActivityName);
 
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             newUri = getContentResolver().insert(TimeManagerContract.ActivityEntry.CONTENT_URI, values);
         } catch (IllegalArgumentException e) {
 
-            Log.e("MainActivity", "I found an exception while trying t oinsert values : " + e.getMessage());
+            Log.e("MainActivity", "I found an exception while trying to insert values : " + e.getMessage());
             newUri = null;
         }
         //Show a toast message depending on whether or not the insertion was successful
