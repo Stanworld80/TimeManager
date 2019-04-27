@@ -121,7 +121,7 @@
         android:layout_marginBottom="75dp"
         android:background="@android:color/background_light"
         android:gravity="center"
-        android:text="Terminer" />
+        android:text="Terminate" />
 
     <TextView
         android:id="@+id/textViewDuration"
