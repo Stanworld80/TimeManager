@@ -32,7 +32,7 @@ public class TimeManagerDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_TIME_MANAGER_TABLE_ACTIVITIES = "CREATE TABLE "
                 + TimeManagerContract.ActivityEntry.TABLE_NAME + " ("
                 + TimeManagerContract.ActivityEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " TEXT NOT NULL);";
+                + TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " TEXT NOT NULL UNIQUE);";
 
         String SQL_CREATE_TIME_MANAGER_TABLE_INSTANCES = "CREATE TABLE "
                 + TimeManagerContract.InstanceEntry.TABLE_NAME + " ( "

@@ -27,7 +27,7 @@ public class TimeManagerProvider extends ContentProvider {
 
 
     /**
-     * URI matcher code for the content URI for the ACTIVITIES table
+     * URI matcher code for the content URI for the tables
      */
     private static final int ACTIVITIES = 100;
     private static final int INSTANCES = 200;
@@ -144,7 +144,7 @@ public class TimeManagerProvider extends ContentProvider {
         switch (match) {
 
             case ACTIVITIES:
-                return insertActivity(uri, contentValues);
+                return getOrInsertActivity(uri, contentValues);
             case INSTANCES:
                 return insertInstance(uri, contentValues);
             default:
@@ -153,6 +153,52 @@ public class TimeManagerProvider extends ContentProvider {
 
     }
 
+
+    /***
+     * Check if activity (with a specific name passed in values)
+     * exists already in the database ,
+     * - if the activity exists : then get it and  the returned Uri will be with
+     * the _ID of the existing activity found.
+     * - if the activity doesn't exist : then insert it and the returned Uri
+     * will be with the new _ID of the inserted activity.
+     * the
+     * @param uri
+     * @param values
+     * @return Return a uri to access the activity found or inserted
+     */
+    private Uri getOrInsertActivity(Uri uri, ContentValues values) {
+        Uri result;
+        SQLiteDatabase database = mTimeManagerDbHelper.getReadableDatabase();
+
+        Log.d(LOG_TAG, "getOrInsertActivity: trying with :"+uri +" and name:"+ values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
+
+        String[] projection = {
+                TimeManagerContract.ActivityEntry._ID,
+                TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME
+        };
+        String[] selectionArgs = new String[]{values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME)};
+        String selection = TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " LIKE ?";
+
+        Cursor cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
+                null, null, null);
+
+        int nbActivityWithThatName = cursor.getCount();
+        if (nbActivityWithThatName == 1) {
+            int theId = cursor.getColumnIndex(TimeManagerContract.ActivityEntry._ID);
+            result = ContentUris.withAppendedId(uri, theId);
+            return result;
+        } else if (nbActivityWithThatName == 0) {
+            result = insertActivity(uri, values);
+            return result;
+        } else {
+            /*
+            ** TODO : should throw a error exception here ,
+            ** because there should be only 1 or 0 activity
+            ** with a name in the base ortherway it is very strange .
+            */
+            return null;
+        }
+    }
     //creating a new method for inserting activity. We are going to use insertActivity() in the Uri insert above
 
     /**
