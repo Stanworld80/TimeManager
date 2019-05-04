@@ -1,11 +1,10 @@
 package com.pasqualiselle.timemanager;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean running;
 
     EditText mEditActivity;
-    String mActivityName;
+    String mLastInsertedActivityName;
+    Long mLastInsertedActivityId;
 
     private SharedPreferences mPreferences;
-    public static final String PREF_KEY_ACTIVITY_NAMES = "PREF_KEY_ACTIVITY_NAMES";
-    public static final String PREF_KEY_ACTIVITY_NAME_NUMBER1 = "PREF_KEY_ACTIVITY_NAME_NUMBER1";
+    public static final String PREF_TIMEMANAGER_KEY = "TIMEMANAGER_PREFERENCES";
+    public static final String PREF_KEY_CURRENT_ACTIVITY_NAME = "PREF_KEY_CURRENT_ACTIVITY_NAME";
+    public static final String PREF_KEY_CURRENT_ACTIVITY_ID = "PREF_KEY_CURRENT_ACTIVITY_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +103,12 @@ public class MainActivity extends AppCompatActivity {
 
                         mEditActivity = findViewById(R.id.editTextAcitivity);
                         //to Save the input activity name and store it in preferences
-                        mActivityName = mEditActivity.getText().toString();
+                        mLastInsertedActivityName = mEditActivity.getText().toString();
 
                         insertActivity();
-                        mPreferences = getSharedPreferences(PREF_KEY_ACTIVITY_NAMES, MODE_PRIVATE);
-                        mPreferences.edit().putString(PREF_KEY_ACTIVITY_NAME_NUMBER1, mActivityName).apply();
-
+                        mPreferences = getSharedPreferences(PREF_TIMEMANAGER_KEY, MODE_PRIVATE);
+                        mPreferences.edit().putString(PREF_KEY_CURRENT_ACTIVITY_NAME, mLastInsertedActivityName).apply();
+                        mPreferences.edit().putLong(PREF_KEY_CURRENT_ACTIVITY_ID, mLastInsertedActivityId).apply();
 
                         Intent intent = new Intent(MainActivity.this, CurrentActivity.class);
                         startActivityForResult(intent, CURRENT_ACTIVITY_REQUEST_CODE);
@@ -127,18 +128,19 @@ public class MainActivity extends AppCompatActivity {
         mEditActivity = findViewById(R.id.editTextAcitivity);
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
-        mActivityName = mEditActivity.getText().toString().trim();
+        mLastInsertedActivityName = mEditActivity.getText().toString().trim();
 
         // Create a ContentValues object where column names are the keys,
         // and activity is the values.
         ContentValues values = new ContentValues();
-        values.put(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME, mActivityName);
+        values.put(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME, mLastInsertedActivityName);
 
         //Insert a new activity into TimeManagerProvider, returning the content URI for the new activity
 
         Uri newUri;
         try {
             newUri = getContentResolver().insert(TimeManagerContract.ActivityEntry.CONTENT_URI, values);
+            mLastInsertedActivityId = ContentUris.parseId(newUri);
         } catch (IllegalArgumentException e) {
 
             Log.e("MainActivity", "I found an exception while trying to insert values : " + e.getMessage());

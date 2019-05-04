@@ -8,11 +8,20 @@
     <string name="type_your_activity">Type your activity here</string>
     <string name="type_your_activity_here">Type your activity here</string>
     <string name="HistoryTitle">HISTORIQUE</string>
+
     <!-- Toast message in editor when new activity has been successfully inserted [CHAR LIMIT = NONE] -->
     <string name="editor_insert_activity_successful">Activity saved</string>
+
+
 
     <!--Toast message in editor when new activity has failed to be inserted [CHAR LIMIT = NONE] -->
     <string name="editor_insert_activity_failed">Error with saving activity</string>
 
+
+    <!-- Toast message in editor when new instance has been successfully inserted [CHAR LIMIT = NONE] -->
+    <string name="editor_insert_instance_successful">Instance saved</string>
+
+    <!--Toast message in editor when new instance has failed to be inserted [CHAR LIMIT = NONE] -->
+    <string name="editor_insert_instance_failed">Error with saving instance</string>
 
 </resources>
