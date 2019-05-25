@@ -80,7 +80,7 @@ public class TimeManagerContract {
         /**
          * Datetime of the beginning of the instance.
          *
-         * Type: TEXT
+         * Type: INTEGER
          */
         public final static String COLUMN_START_TIME="startTime";
 
@@ -89,7 +89,7 @@ public class TimeManagerContract {
         /**
          * Datetime of the end of the instance.
          *
-         * Type: TEXT
+         * Type: INTEGER
          */
         public final static String COLUMN_END_TIME ="endTime";
 

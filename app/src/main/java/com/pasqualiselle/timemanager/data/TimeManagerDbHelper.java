@@ -38,8 +38,8 @@ public class TimeManagerDbHelper extends SQLiteOpenHelper {
                 + TimeManagerContract.InstanceEntry.TABLE_NAME + " ( "
                 + TimeManagerContract.InstanceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + " INTEGER NOT NULL , "
-                + TimeManagerContract.InstanceEntry.COLUMN_START_TIME + " TEXT NOT NULL , "
-                + TimeManagerContract.InstanceEntry.COLUMN_END_TIME + " TEXT NOT NULL);";
+                + TimeManagerContract.InstanceEntry.COLUMN_START_TIME + " INTEGER NOT NULL , "
+                + TimeManagerContract.InstanceEntry.COLUMN_END_TIME + " INTEGER NOT NULL);";
 
         //Execute the SQL statement
         db.execSQL(SQL_CREATE_TIME_MANAGER_TABLE_ACTIVITIES);

@@ -232,7 +232,7 @@ public class TimeManagerProvider extends ContentProvider {
 
     private Uri insertInstance(Uri uri, ContentValues values) {
 
-        // TODO: Insert a new instance into the intance database table with the given ContentValues
+        // TODO: Insert a new instance into the instance database table with the given ContentValues
         //Get writable database
         SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
 
