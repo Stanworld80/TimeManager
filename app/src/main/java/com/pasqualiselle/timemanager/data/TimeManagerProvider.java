@@ -100,6 +100,7 @@ public class TimeManagerProvider extends ContentProvider {
                 cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
+
             case INSTANCES:
                 cursor = database.query(TimeManagerContract.InstanceEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
@@ -118,10 +119,11 @@ public class TimeManagerProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 // This will perform a query on the ACTIVITIES table where the _id equals 3 to return a
-                // Cursor containing that row of the table.
+                // Cursor containing that row of the table
                 cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
+
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
 
@@ -170,17 +172,26 @@ public class TimeManagerProvider extends ContentProvider {
         Uri result;
         SQLiteDatabase database = mTimeManagerDbHelper.getReadableDatabase();
 
-        Log.d(LOG_TAG, "getOrInsertActivity: trying with :"+uri +" and name:"+ values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
+        Log.d(LOG_TAG, "getOrInsertActivity: trying with :" + uri + " and name:" + values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
 
         String[] projection = {
                 TimeManagerContract.ActivityEntry._ID,
                 TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME
         };
-        String[] selectionArgs = new String[]{values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME)};
+
+        String[] selectionArgs = new String[]{
+                values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME)
+        };
+
         String selection = TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " LIKE ?";
 
-        Cursor cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
-                null, null, null);
+        Cursor cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME,
+                                        projection,
+                                        selection,
+                                        selectionArgs,
+                                 null,
+                                  null,
+                                 null);
 
         int nbActivityWithThatName = cursor.getCount();
         if (nbActivityWithThatName == 1) {
@@ -192,10 +203,10 @@ public class TimeManagerProvider extends ContentProvider {
             return result;
         } else {
             /*
-            ** TODO : should throw a error exception here ,
-            ** because there should be only 1 or 0 activity
-            ** with a name in the base ortherway it is very strange .
-            */
+             ** TODO : should throw a error exception here ,
+             ** because there should be only 1 or 0 activity
+             ** with a name in the base it is very strange .
+             */
             return null;
         }
     }
@@ -217,7 +228,7 @@ public class TimeManagerProvider extends ContentProvider {
 
         long id = database.insert(TimeManagerContract.ActivityEntry.TABLE_NAME, null, values);
 
-        //If the id is -1, then the insertion failed. Logan error and return null
+        //If the id is -1, then the insertion failed. Log an error and return null
         if (id == -1) {
 
             Log.e(LOG_TAG, "Failed to insert row for " + uri);

@@ -110,8 +110,10 @@ public class CurrentActivity extends AppCompatActivity {
     }
 
     public void terminateChronometer(View view) {
+
         mChronometer.stop();
         mEndDateTime = mStartDateTime + (SystemClock.elapsedRealtime() - startTime);
+
         ContentValues values = new ContentValues();
         values.put(TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID, mCurrentActivityId);
         values.put(TimeManagerContract.InstanceEntry.COLUMN_START_TIME, mStartDateTime);
@@ -124,7 +126,7 @@ public class CurrentActivity extends AppCompatActivity {
             newUri = getContentResolver().insert(TimeManagerContract.InstanceEntry.CONTENT_URI, values);
         } catch (IllegalArgumentException e) {
 
-            Log.e("MainActivity", "I found an exception while trying to insert instance with values : " + e.getMessage());
+            Log.e("MainActivity", "while trying to insert instance with values : " + e.getMessage());
             newUri = null;
         }
         //Show a toast message depending on whether or not the insertion was successful
