@@ -37,19 +37,9 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void displayDatabaseInfo() {
 
-        //projection is just a name for the Columns that we were interested in getting back
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
-        String[] projection = {
-
-                TimeManagerContract.ActivityEntry._ID,
-                TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME
-
-        };
-
         Cursor cursor = getContentResolver().query(
-                TimeManagerContract.ActivityEntry.CONTENT_URI,
-                projection,
+                TimeManagerContract.ActivitiesDuration.CONTENT_URI,
+                null,
                 null,
                 null,
                 null

@@ -5,8 +5,7 @@ import android.provider.BaseColumns;
 
 public class TimeManagerContract {
 
-    // To prevent someone from accidentally instantiating the contract class,
-    // give it an empty constructor.
+    // To prevent instantiating the contract class.
     private TimeManagerContract(){}
 
     /**
@@ -27,11 +26,18 @@ public class TimeManagerContract {
 
     public static final String PATH_INSTANCES  = "instances";
 
+    public static final String PATH_ACTIVITIES_DURATION = "activities_duration";
+
+    public static final class ActivitiesDuration
+    {
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ACTIVITIES_DURATION);
+        public final static String COLUMN_DURATION = "duration";
+    }
+
     /**
      * Inner class that defines constant values for the time_manager database table.
      * Each entry in the table represents a single activity and its associated name.
      */
-
     public static final class ActivityEntry implements BaseColumns {
 
         /** The content URI to access the activity data in the provider */
@@ -55,6 +61,7 @@ public class TimeManagerContract {
         public final static String COLUMN_ACTIVITY_NAME ="name";
 
     }
+
     public static final class InstanceEntry implements BaseColumns {
 
         /** The content URI to access the instances data in the provider */

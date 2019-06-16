@@ -19,9 +19,8 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
 
 
     /**
-     *
-     * @param context The context
-     * @param c       The cursor from which to get the data
+     * @param context     The context
+     * @param c           The cursor from which to get the data
      * @param autoRequery I dont know what is this parameter, it needs study
      */
     public TimeManagerCursorAdapter(Context context, Cursor c, boolean autoRequery) {
@@ -41,8 +40,7 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        // TODO: Fill out this method and return the list item view (instead of null)
-        return LayoutInflater.from(context).inflate(R.layout.activity_item,parent,false);
+        return LayoutInflater.from(context).inflate(R.layout.activity_item, parent, false);
     }
 
 
@@ -61,11 +59,14 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
 
         // Find fields to populate in inflated template
         TextView activityNameTxtView = view.findViewById(R.id.activityNameTextView);
+        TextView durationTxtView = view.findViewById(R.id.durationTextView);
 
         //Extract properties from the cursor
         String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
+        int duration = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION)) / 1000;
 
         //populated fields with extracted properties
         activityNameTxtView.setText(activityName);
+        durationTxtView.setText(duration + " seconds");
     }
 }

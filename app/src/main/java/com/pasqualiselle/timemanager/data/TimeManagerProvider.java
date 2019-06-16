@@ -31,6 +31,7 @@ public class TimeManagerProvider extends ContentProvider {
      */
     private static final int ACTIVITIES = 100;
     private static final int INSTANCES = 200;
+    private static final int ACTIVITIES_DURATIONS = 100200;
 
 
     /**
@@ -57,7 +58,7 @@ public class TimeManagerProvider extends ContentProvider {
         sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES, INSTANCES);
         sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES + "/#", ACTIVITY_ID);
         sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES + "/#", INSTANCE_ID);
-
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES_DURATION, ACTIVITIES_DURATIONS);
     }
     /**
      * {@link ContentProvider} for TimeManager app.
@@ -78,7 +79,10 @@ public class TimeManagerProvider extends ContentProvider {
     //I did a modification here, changed some parameters projection,selection,selectionArgs
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs,
+    public Cursor query(@NonNull Uri uri,
+                        @Nullable String[] projection,
+                        @Nullable String selection,
+                        @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
         //Get readable database
         SQLiteDatabase database = mTimeManagerDbHelper.getReadableDatabase();
@@ -95,7 +99,6 @@ public class TimeManagerProvider extends ContentProvider {
                 //For the ACTIVITIES code, query the ACTIVITIES table directly with the give
                 //projection,selection,selection arguments,and sort order.The cursor
                 //could contain multiple rows of the pets table
-                // TODO: Perform database query on ACTIVITIES table
 
                 cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
@@ -122,6 +125,48 @@ public class TimeManagerProvider extends ContentProvider {
                 // Cursor containing that row of the table
                 cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
+                break;
+            case ACTIVITIES_DURATIONS:
+                String q = ("SELECT " + TimeManagerContract.ActivityEntry.TABLE_NAME + "." +
+                        TimeManagerContract.ActivityEntry._ID +
+                        " , " + TimeManagerContract.InstanceEntry.COLUMN_START_TIME +
+                        " , " + TimeManagerContract.InstanceEntry.COLUMN_END_TIME +
+                        " , " + TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME +
+                        " , SUM(" +
+                        TimeManagerContract.InstanceEntry.COLUMN_END_TIME +
+                        "-" + TimeManagerContract.InstanceEntry.COLUMN_START_TIME +
+                        ")" +
+                        " as " + TimeManagerContract.ActivitiesDuration.COLUMN_DURATION +
+                        " FROM " +
+                        TimeManagerContract.InstanceEntry.TABLE_NAME
+                        + "  , " +
+                        TimeManagerContract.ActivityEntry.TABLE_NAME + " WHERE " +
+                        TimeManagerContract.ActivityEntry.TABLE_NAME + "." +
+                        TimeManagerContract.ActivityEntry._ID + " = " +
+                        TimeManagerContract.InstanceEntry.TABLE_NAME + "." +
+                        TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID +
+                        " GROUP BY " +
+                        TimeManagerContract.InstanceEntry.TABLE_NAME + "." +
+                        TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID);
+
+                Log.d("DURATIONS_QUERIES", "query: " + q);
+                cursor = database.rawQuery(q, null);
+
+                while (cursor.moveToNext()) {
+                    String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
+                    Integer duration = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION));
+                    Integer start = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_START_TIME));
+                    Integer end = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_END_TIME));
+
+                    Log.d("DURATIONS_QUERIES",
+                            "name: " + activityName +
+                                    "\tstart:" + start +
+                                    "\tend:" + end +
+                                    "\tdurationcount:" + duration);
+
+                }
+                cursor.moveToFirst();
+
                 break;
 
             default:
@@ -179,33 +224,50 @@ public class TimeManagerProvider extends ContentProvider {
                 TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME
         };
 
+        String selection = TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " LIKE ?";
+
         String[] selectionArgs = new String[]{
                 values.getAsString(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME)
         };
 
-        String selection = TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME + " LIKE ?";
 
         Cursor cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME,
-                                        projection,
-                                        selection,
-                                        selectionArgs,
-                                 null,
-                                  null,
-                                 null);
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
 
         int nbActivityWithThatName = cursor.getCount();
         if (nbActivityWithThatName == 1) {
-            int theId = cursor.getColumnIndex(TimeManagerContract.ActivityEntry._ID);
+
+            /* // FOR DEBUGGING PURPOSE
+            Log.d(LOG_TAG, "getOrInsertActivity: nbColumn : "+cursor.getColumnCount());
+            for (String n : cursor.getColumnNames()) {
+                Log.d(LOG_TAG, "getOrInsertActivity: name : " + n + " : "+
+                        cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry._ID));
+            }*/
+
+            int nb = cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry._ID);
+
+            Log.d(LOG_TAG, "getOrInsertActivity: trying to get the ID , on column " + nb);
+            cursor.moveToFirst(); // THIS IS VERY IMPORTANT !!!!
+            int theId = cursor.getInt(nb);
             result = ContentUris.withAppendedId(uri, theId);
+            Log.d(LOG_TAG, "getOrInsertActivity: " + theId);
             return result;
         } else if (nbActivityWithThatName == 0) {
+            Log.d(LOG_TAG, "getOrInsertActivity: not found, so inserting");
+
             result = insertActivity(uri, values);
+
             return result;
         } else {
             /*
-             ** TODO : should throw a error exception here ,
-             ** because there should be only 1 or 0 activity
-             ** with a name in the base it is very strange .
+            TODO : should throw a error exception here ,
+              because there should be only 1 or 0 activity
+              with a name in the base it is very strange .
              */
             return null;
         }
@@ -218,7 +280,6 @@ public class TimeManagerProvider extends ContentProvider {
      */
 
     private Uri insertActivity(Uri uri, ContentValues values) {
-        // TODO: Insert a new activity into the ACTIVITIES database table with the given ContentValues
         //Get writable database
         SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
 
@@ -242,8 +303,6 @@ public class TimeManagerProvider extends ContentProvider {
     }
 
     private Uri insertInstance(Uri uri, ContentValues values) {
-
-        // TODO: Insert a new instance into the instance database table with the given ContentValues
         //Get writable database
         SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
 
@@ -257,7 +316,8 @@ public class TimeManagerProvider extends ContentProvider {
 
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
-        }
+        } else
+            Log.d(LOG_TAG, "insertInstance: id=  " + id);
 
         // Once we know the ID of the new row in the table,
         // return the new URI with the ID appended to the end of it

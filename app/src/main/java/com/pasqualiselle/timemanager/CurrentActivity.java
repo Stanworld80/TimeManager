@@ -51,7 +51,7 @@ public class CurrentActivity extends AppCompatActivity {
         mCurrentActivityName = mSharedPreferences.getString(MainActivity.PREF_KEY_CURRENT_ACTIVITY_NAME,"hey");
         mCurrentActivityId = mSharedPreferences.getLong(MainActivity.PREF_KEY_CURRENT_ACTIVITY_ID,0);
 
-        mActivityNameTextView.setText(mCurrentActivityName);
+        mActivityNameTextView.setText(mCurrentActivityName  + "("+mCurrentActivityId+")");
 
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time %s");
@@ -136,7 +136,6 @@ public class CurrentActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.editor_insert_instance_failed),
                     Toast.LENGTH_SHORT).show();
         } else {
-
             //Otherwise, the insertion was successful and we can display a toast
             Toast.makeText(this, getString(R.string.editor_insert_instance_successful),
                     Toast.LENGTH_SHORT).show();
