@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.pasqualiselle.timemanager.R;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * {@link TimeManagerCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of pet data as its data source. This adapter knows
@@ -63,10 +65,17 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
 
         //Extract properties from the cursor
         String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
-        int duration = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION)) / 1000;
+        int duration = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION));
+
+
+        String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(duration),
+                TimeUnit.MILLISECONDS.toMinutes(duration) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration)),
+                TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration)));
 
         //populated fields with extracted properties
         activityNameTxtView.setText(activityName);
-        durationTxtView.setText(duration + " seconds");
+        durationTxtView.setText(hms);
     }
+
+
 }
