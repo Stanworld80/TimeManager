@@ -125,6 +125,7 @@
         android:gravity="center"
         android:onClick="terminateChronometer"
         android:text="Terminate" />
+<!--
 
     <TextView
         android:id="@+id/textViewDuration"
@@ -139,6 +140,7 @@
         android:text="TextView"
         android:textSize="25sp" />
 
+-->
 
 </RelativeLayout>
 
