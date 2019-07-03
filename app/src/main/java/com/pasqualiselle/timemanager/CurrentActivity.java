@@ -55,12 +55,7 @@ public class CurrentActivity extends AppCompatActivity {
 
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat("Time %s");
-    }
 
-    public void startChronometer(View v){
-
-        Button mButtonStart = findViewById(R.id.buttonStart);
-        mButtonStart.setText("Restart");
         if(!running){
             mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
             mChronometer.start();
@@ -70,12 +65,19 @@ public class CurrentActivity extends AppCompatActivity {
         }
 
     }
+/*
+    public void startChronometer(View v){
+
+        Button mButtonStart = findViewById(R.id.buttonStart);
+        mButtonStart.setText("Restart");
+
+    }*/
 
     public Chronometer getDuration(){
 
         return mChronometer;
     }
-
+/*
     public void pauseChronometer(View v){
 
         if(running){
@@ -108,7 +110,7 @@ public class CurrentActivity extends AppCompatActivity {
          pauseOffset = 0;
 
     }
-
+*/
     public void terminateChronometer(View view) {
 
         mChronometer.stop();
