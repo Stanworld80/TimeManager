@@ -28,10 +28,7 @@ import static java.text.DateFormat.getTimeInstance;
 public class MainActivity extends AppCompatActivity {
 
     public static final int CURRENT_ACTIVITY_REQUEST_CODE = 42;
-    private Chronometer mChronometer;
-    private long pauseOffset;
-    private long startTime;
-    private boolean running;
+
 
     EditText mEditActivity;
     String mLastInsertedActivityName;
@@ -193,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
                                 String dateString = sdf.format(date);
                                 tdate.setText(dateString);
+
                             }
 
 

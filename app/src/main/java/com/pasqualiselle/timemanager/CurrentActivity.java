@@ -26,17 +26,11 @@ public class CurrentActivity extends AppCompatActivity {
 
 
     private Chronometer mChronometer;
-    private long pauseOffset;
     private boolean running;
-    private String mDuration;
-    private TextView mTextViewDuration;
     private long startTime;
     private long mStartDateTime;
     private long mEndDateTime;
-    private long duration;
-    int durationSeconds;
-    int durationMinutes;
-    int durationHours;
+
 
 
     @Override
@@ -51,13 +45,13 @@ public class CurrentActivity extends AppCompatActivity {
         mCurrentActivityName = mSharedPreferences.getString(MainActivity.PREF_KEY_CURRENT_ACTIVITY_NAME,"hey");
         mCurrentActivityId = mSharedPreferences.getLong(MainActivity.PREF_KEY_CURRENT_ACTIVITY_ID,0);
 
-        mActivityNameTextView.setText(mCurrentActivityName  + "("+mCurrentActivityId+")");
+        mActivityNameTextView.setText(mCurrentActivityName);
 
         mChronometer = findViewById(R.id.chronometer);
-        mChronometer.setFormat("Time %s");
+        mChronometer.setFormat(" %s");
 
         if(!running){
-            mChronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+            mChronometer.setBase(SystemClock.elapsedRealtime());
             mChronometer.start();
             running = true;
             startTime = SystemClock.elapsedRealtime();
@@ -65,53 +59,15 @@ public class CurrentActivity extends AppCompatActivity {
         }
 
     }
-/*
-    public void startChronometer(View v){
 
-        Button mButtonStart = findViewById(R.id.buttonStart);
-        mButtonStart.setText("Restart");
-
-    }*/
 
     public Chronometer getDuration(){
 
         return mChronometer;
     }
-/*
-    public void pauseChronometer(View v){
 
-        if(running){
-            mChronometer.stop();
-            pauseOffset = SystemClock.elapsedRealtime() - mChronometer.getBase();
-            running = false;
-
-
-              durationSeconds = (int)(pauseOffset / 1000)% 60;
-             durationMinutes = (int)((pauseOffset/(1000*60))% 60);
-             durationHours = (int)((pauseOffset/(1000*60*60)% 24));
-
-           }
-
-            mTextViewDuration = findViewById(R.id.textViewDuration);
-        if ((durationSeconds < 10) || (durationMinutes < 10)){
-            mTextViewDuration.setText("Duration "+ String.valueOf(durationHours+" 0: " + durationMinutes+
-                    "0: "+durationSeconds));
-
-        }
-            mTextViewDuration.setText("Duration "+ String.valueOf(durationHours+" : " + durationMinutes+
-                    " : "+durationSeconds));
-
-        }
-
-
-    public void resetChronometer(View v){
-
-         mChronometer.setBase(SystemClock.elapsedRealtime());
-         pauseOffset = 0;
-
-    }
-*/
     public void terminateChronometer(View view) {
+
 
         mChronometer.stop();
         mEndDateTime = mStartDateTime + (SystemClock.elapsedRealtime() - startTime);
@@ -145,5 +101,7 @@ public class CurrentActivity extends AppCompatActivity {
                     +"("+mCurrentActivityId +")"
                     +" : start at "+mStartDateTime+" - end at : "+mEndDateTime );
         }
+
+        finish();
     }
 }

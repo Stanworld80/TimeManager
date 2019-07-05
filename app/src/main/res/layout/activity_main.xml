@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/backgroundActivity">
 
     <TextView
 
@@ -14,7 +15,7 @@
         android:fontFamily="sans-serif-condensed"
         android:includeFontPadding="true"
         android:text="@string/date"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -36,8 +37,8 @@
         android:fontFamily="sans-serif-light"
         android:includeFontPadding="true"
         android:text="@string/day_of_the_week"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@+id/text_view_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +47,7 @@
 
     <Button
         android:id="@+id/start_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -55,7 +56,7 @@
         android:layout_marginBottom="24dp"
         android:background="@android:color/background_light"
         android:text="@string/start"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@android:color/holo_orange_dark"
         app:layout_constraintBottom_toTopOf="@+id/history_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -63,7 +64,7 @@
 
     <Button
         android:id="@+id/history_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -72,30 +73,13 @@
         android:layout_marginBottom="32dp"
         android:background="@android:color/background_light"
         android:text="@string/historique"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@android:color/holo_orange_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_activity"
-        android:layout_width="100dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="216dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/activite"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextAcitivity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
+
 
     <EditText
         android:id="@+id/editTextAcitivity"

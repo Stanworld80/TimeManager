@@ -2,12 +2,12 @@
     <string name="app_name">TimeManager</string>
     <string name="date">Date</string>
     <string name="day_of_the_week">Day of the week</string>
-    <string name="activite">ACTIVITE</string>
+    <string name="activite">ACTIVITY</string>
     <string name="start">Start</string>
-    <string name="historique">Historique</string>
+    <string name="historique">History</string>
     <string name="type_your_activity">Type your activity here</string>
     <string name="type_your_activity_here">Type your activity here</string>
-    <string name="HistoryTitle">HISTORIQUE</string>
+    <string name="HistoryTitle">HISTORY</string>
 
     <!-- Toast message in editor when new activity has been successfully inserted [CHAR LIMIT = NONE] -->
     <string name="editor_insert_activity_successful">Activity saved</string>
