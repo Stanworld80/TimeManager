@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="backgroundActivity">#e1e7f0</color>
+    <color name="cursorColor">#45494f</color>
 </resources>

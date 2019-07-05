@@ -91,8 +91,10 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="124dp"
         android:ems="10"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:hint="@string/type_your_activity_here"
         android:inputType="textPersonName"
+        android:backgroundTint="@color/cursorColor"
         app:layout_constraintBottom_toTopOf="@+id/start_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
