@@ -68,7 +68,6 @@ public class CurrentActivity extends AppCompatActivity {
 
     public void terminateChronometer(View view) {
 
-
         mChronometer.stop();
         mEndDateTime = mStartDateTime + (SystemClock.elapsedRealtime() - startTime);
 

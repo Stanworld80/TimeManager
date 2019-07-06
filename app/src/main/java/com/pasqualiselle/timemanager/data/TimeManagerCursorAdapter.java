@@ -1,13 +1,14 @@
 package com.pasqualiselle.timemanager.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-
+import com.pasqualiselle.timemanager.DetailActivity;
 import com.pasqualiselle.timemanager.R;
 
 import java.util.concurrent.TimeUnit;
@@ -57,7 +58,7 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
 
         // Find fields to populate in inflated template
         TextView activityNameTxtView = view.findViewById(R.id.activityNameTextView);
@@ -75,6 +76,14 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
         //populated fields with extracted properties
         activityNameTxtView.setText(activityName);
         durationTxtView.setText(hms);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
+
+                context.startActivity(intent);
+            }
+        });
     }
 
 

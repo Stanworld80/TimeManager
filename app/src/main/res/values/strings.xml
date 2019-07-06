@@ -13,7 +13,6 @@
     <string name="editor_insert_activity_successful">Activity saved</string>
 
 
-
     <!--Toast message in editor when new activity has failed to be inserted [CHAR LIMIT = NONE] -->
     <string name="editor_insert_activity_failed">Error with saving activity</string>
 
