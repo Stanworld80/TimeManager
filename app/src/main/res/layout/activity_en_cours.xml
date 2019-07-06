@@ -29,7 +29,7 @@
         android:lines="3"
         android:textColor="@android:color/holo_orange_dark"
         android:textColorHighlight="@android:color/holo_orange_light"
-        android:textSize="23sp" />
+        android:textSize="23dp" />
 
 
     <Chronometer
