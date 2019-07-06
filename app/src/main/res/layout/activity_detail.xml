@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsActivity">
+    tools:context=".DetailsActivity"
     android:background="@color/backgroundActivity"
     >
 
@@ -16,9 +16,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="75dp"
-        android:text="ActivityTitle"
-        android:textColorHighlight="@android:color/holo_orange_dark"
-        android:textSize="23dp"
+        android:text="@string/activitytitle"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"

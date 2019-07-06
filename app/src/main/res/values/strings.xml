@@ -23,5 +23,6 @@
     <!--Toast message in editor when new instance has failed to be inserted [CHAR LIMIT = NONE] -->
     <string name="editor_insert_instance_failed">Error with saving instance</string>
     <string name="clear_all_data">Clear All Data</string>
+    <string name="activitytitle">ActivityTitle</string>
 
 </resources>

@@ -82,7 +82,7 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context.getApplicationContext(), DetailsActivity.class);
-                intent.putExtra("title" , activityName);
+                intent.putExtra("activity_name" , activityName);
                 intent.putExtra("activity_id", activityId);
 
                 context.startActivity(intent);
