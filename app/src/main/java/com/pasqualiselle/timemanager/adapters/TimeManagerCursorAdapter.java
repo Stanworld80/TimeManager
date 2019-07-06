@@ -1,4 +1,4 @@
-package com.pasqualiselle.timemanager.data;
+package com.pasqualiselle.timemanager.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import com.pasqualiselle.timemanager.DetailActivity;
+import com.pasqualiselle.timemanager.DetailsActivity;
 import com.pasqualiselle.timemanager.R;
+import com.pasqualiselle.timemanager.data.TimeManagerContract;
 
 import java.util.concurrent.TimeUnit;
 
@@ -65,7 +66,8 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
         TextView durationTxtView = view.findViewById(R.id.durationTextView);
 
         //Extract properties from the cursor
-        String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
+        final String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
+        final int activityId = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry._ID));
         int duration = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION));
 
 
@@ -79,7 +81,9 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
+                Intent intent = new Intent(context.getApplicationContext(), DetailsActivity.class);
+                intent.putExtra("title" , activityName);
+                intent.putExtra("activity_id", activityId);
 
                 context.startActivity(intent);
             }
