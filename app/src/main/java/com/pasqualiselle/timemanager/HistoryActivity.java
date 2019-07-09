@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
-import com.pasqualiselle.timemanager.adapters.TimeManagerCursorAdapter;
+import com.pasqualiselle.timemanager.adapters.HistoryCursorAdapter;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -16,7 +16,6 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-
         displayDatabaseInfo();
     }
 
@@ -24,7 +23,6 @@ public class HistoryActivity extends AppCompatActivity {
      * Temporary helper method to display information in the onscreen TextView about the state of
      * the ACTIVITIES database.
      */
-
     private void displayDatabaseInfo() {
 
         Cursor cursor = getContentResolver().query(
@@ -39,13 +37,10 @@ public class HistoryActivity extends AppCompatActivity {
         ListView timeManagerListItemsView = findViewById(R.id.listViewItems);
 
         //Setup cursor adapter using cursor from_last step
-        TimeManagerCursorAdapter timeManagerCursorAdapter = new TimeManagerCursorAdapter(this,cursor,false);
+        HistoryCursorAdapter timeManagerCursorAdapter = new HistoryCursorAdapter(this,cursor,false);
 
         //Attach cursor adapter to the Listview
         timeManagerListItemsView.setAdapter(timeManagerCursorAdapter);
-
-
-
     }
 
 }

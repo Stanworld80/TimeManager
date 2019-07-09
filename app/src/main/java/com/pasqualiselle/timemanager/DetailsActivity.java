@@ -3,6 +3,7 @@ package com.pasqualiselle.timemanager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.pasqualiselle.timemanager.adapters.DetailsCursorAdapter;
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
+
+import java.net.URI;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -26,7 +29,7 @@ public class DetailsActivity extends AppCompatActivity {
         // getting datas
         Intent localIntent = getIntent();
         String activityName = localIntent.getStringExtra("activity_name");
-        int activityId = localIntent.getIntExtra("activity_id", 0);
+        final int activityId = localIntent.getIntExtra("activity_id", 0);
 
         // settings views
         TextView titleView = findViewById(R.id.activityTitle);
@@ -45,16 +48,15 @@ public class DetailsActivity extends AppCompatActivity {
                         .setPositiveButton( "YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
-
-
+                                Uri dataToDelete = Uri.withAppendedPath(TimeManagerContract.ActivityEntry.CONTENT_URI, "/"+activityId);
+                                getContentResolver().delete(dataToDelete,null,null);
+                                finish();
                             }
+
                         } )
                         .setNegativeButton( "No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
-
 
                             }
                         } )
@@ -62,8 +64,6 @@ public class DetailsActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .create()
                         .show();
-
-
             }
 
 
