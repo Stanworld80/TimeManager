@@ -15,11 +15,11 @@ import com.pasqualiselle.timemanager.data.TimeManagerContract;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@link TimeManagerCursorAdapter} is an adapter for a list or grid view
+ * {@link HistoryCursorAdapter} is an adapter for a list or grid view
  * that uses a {@link Cursor} of pet data as its data source. This adapter knows
  * how to create list items for each row of pet data in the {@link Cursor}.
  */
-public class TimeManagerCursorAdapter extends CursorAdapter {
+public class HistoryCursorAdapter extends CursorAdapter {
 
 
     /**
@@ -27,7 +27,7 @@ public class TimeManagerCursorAdapter extends CursorAdapter {
      * @param c           The cursor from which to get the data
      * @param autoRequery I dont know what is this parameter, it needs study
      */
-    public TimeManagerCursorAdapter(Context context, Cursor c, boolean autoRequery) {
+    public HistoryCursorAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
     }
 
