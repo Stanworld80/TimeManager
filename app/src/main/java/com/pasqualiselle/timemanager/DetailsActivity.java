@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        Log.d("TIMEMANAGER ", this.getClass()+" : OnCreate called.");
 
         // getting datas
         Intent localIntent = getIntent();
@@ -49,8 +51,12 @@ public class DetailsActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Uri dataToDelete = Uri.withAppendedPath(TimeManagerContract.ActivityEntry.CONTENT_URI, "/"+activityId);
+
                                 getContentResolver().delete(dataToDelete,null,null);
+
+                              //  setResult(RESULT_OK,null);
                                 finish();
+
                             }
 
                         } )
@@ -97,5 +103,36 @@ public class DetailsActivity extends AppCompatActivity {
         //Attach cursor adapter to the Listview
         detailsListItemsView.setAdapter(theDetailsCursorAdapter);
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onResume called.");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onRestart called.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onPause called.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onStop called.");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onDestroy called.");
     }
 }

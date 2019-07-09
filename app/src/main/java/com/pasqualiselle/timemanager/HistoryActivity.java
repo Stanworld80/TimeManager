@@ -1,8 +1,10 @@
 package com.pasqualiselle.timemanager;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
@@ -14,15 +16,47 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        Log.d("TIMEMANAGER", this.getClass()+" : onCreate called.");
 
+        setContentView(R.layout.activity_history);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("TIMEMANAGER", this.getClass()+" : onResume called.");
         displayDatabaseInfo();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TIMEMANAGER", this.getClass()+" : onRestart called.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onPause called.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TIMEMANAGER", this.getClass()+" : onStop called.");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("TIMEMANAGER", this.getClass()+" : onDestroy called.");
+    }
+
+
     /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the ACTIVITIES database.
-     */
+         * Temporary helper method to display information in the onscreen TextView about the state of
+         * the ACTIVITIES database.
+         */
     private void displayDatabaseInfo() {
 
         Cursor cursor = getContentResolver().query(
@@ -41,6 +75,8 @@ public class HistoryActivity extends AppCompatActivity {
 
         //Attach cursor adapter to the Listview
         timeManagerListItemsView.setAdapter(timeManagerCursorAdapter);
+
+
     }
 
 }

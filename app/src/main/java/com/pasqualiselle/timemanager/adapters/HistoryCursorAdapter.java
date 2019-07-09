@@ -1,8 +1,10 @@
 package com.pasqualiselle.timemanager.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,8 @@ public class HistoryCursorAdapter extends CursorAdapter {
         //populated fields with extracted properties
         activityNameTxtView.setText(activityName);
         durationTxtView.setText(hms);
+
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,6 +90,7 @@ public class HistoryCursorAdapter extends CursorAdapter {
                 intent.putExtra("activity_id", activityId);
 
                 context.startActivity(intent);
+
             }
         });
     }
