@@ -1,10 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">#e1e7f0</item>
+        <item name="colorPrimaryDark">#e1e7f0</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -14,4 +14,8 @@
         <item name="android:textColorPrimary">@android:color/black</item>
     </style>
 
+    <style name="TimeManagerBarTitle" parent="TextAppearance.AppCompat.Title">
+    <item name="android:textSize">@dimen/abc_text_size_title_material_toolbar</item>
+    <item name="android:textColor">#0000ff</item>
+    </style>
 </resources>

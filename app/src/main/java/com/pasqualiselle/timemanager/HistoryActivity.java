@@ -16,7 +16,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-
+        setTitle("History");
         displayDatabaseInfo();
     }
 
@@ -43,8 +43,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         //Attach cursor adapter to the Listview
         timeManagerListItemsView.setAdapter(timeManagerCursorAdapter);
-
-
 
     }
 

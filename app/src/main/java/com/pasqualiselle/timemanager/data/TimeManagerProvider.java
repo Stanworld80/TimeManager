@@ -136,11 +136,12 @@ public class TimeManagerProvider extends ContentProvider {
                         TimeManagerContract.InstanceEntry.COLUMN_END_TIME +
                         "-" + TimeManagerContract.InstanceEntry.COLUMN_START_TIME +
                         ")" +
-                        " as " + TimeManagerContract.ActivitiesDuration.COLUMN_DURATION +
+                        " AS " + TimeManagerContract.ActivitiesDuration.COLUMN_DURATION +
                         " FROM " +
                         TimeManagerContract.InstanceEntry.TABLE_NAME
                         + "  , " +
-                        TimeManagerContract.ActivityEntry.TABLE_NAME + " WHERE " +
+                        TimeManagerContract.ActivityEntry.TABLE_NAME +
+                        " WHERE " +
                         TimeManagerContract.ActivityEntry.TABLE_NAME + "." +
                         TimeManagerContract.ActivityEntry._ID + " = " +
                         TimeManagerContract.InstanceEntry.TABLE_NAME + "." +
@@ -152,12 +153,12 @@ public class TimeManagerProvider extends ContentProvider {
                 Log.d("DURATIONS_QUERIES", "query: " + q);
                 cursor = database.rawQuery(q, null);
 
+                //for debug purposes,look at LogCat
                 while (cursor.moveToNext()) {
                     String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
-                    Integer duration = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION));
-                    Integer start = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_START_TIME));
-                    Integer end = cursor.getInt(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_END_TIME));
-
+                    long start = cursor.getLong(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_START_TIME));
+                    long end = cursor.getLong(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_END_TIME));
+                    long duration = cursor.getLong(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION));
                     Log.d("DURATIONS_QUERIES",
                             "name: " + activityName +
                                     "\tstart:" + start +

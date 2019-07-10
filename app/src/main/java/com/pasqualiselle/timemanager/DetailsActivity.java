@@ -23,6 +23,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        setTitle("Activity detail");
         // getting datas
         Intent localIntent = getIntent();
         String activityName = localIntent.getStringExtra("activity_name");

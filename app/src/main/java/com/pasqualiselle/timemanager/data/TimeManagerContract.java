@@ -28,6 +28,9 @@ public class TimeManagerContract {
 
     public static final String PATH_ACTIVITIES_DURATION = "activities_duration";
 
+
+    //Notice that COLUMN_DURATION does not exist as a Column in the SQL
+    //COLUMN_DURATION will be created from the different between COLUMN_START_TIME and COLUMN_END_TIME from the table INSTANCES
     public static final class ActivitiesDuration
     {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ACTIVITIES_DURATION);
