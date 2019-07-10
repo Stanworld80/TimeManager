@@ -24,5 +24,7 @@
     <string name="editor_insert_instance_failed">Error with saving instance</string>
     <string name="clear_all_data">Clear All Data</string>
     <string name="activitytitle">ActivityTitle</string>
+    <string name="activitydate">ActivityDate :</string>
+    <string name="_0000_ms">0000 ms</string>
 
 </resources>

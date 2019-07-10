@@ -4,12 +4,12 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#e1e7f0</item>
-        <item name="colorPrimaryDark">#e1e7f0</item>
+        <item name="colorPrimaryDark">#9299a6</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@android:color/holo_orange_light</item>
         <item name="android:textColor">@android:color/holo_orange_light</item>
         <item name="android:textColorPrimary">@android:color/black</item>
     </style>

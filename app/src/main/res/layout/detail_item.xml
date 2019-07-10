@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:text="ActivityDate : "
+        android:layout_marginLeft="18dp"
+        android:text="@string/activitydate"
         android:textSize="15sp" />
 
     <TextView
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="0000 ms"
+        android:layout_marginRight="18dp"
+        android:text="@string/_0000_ms"
         android:textSize="15sp" />
 
 

@@ -28,7 +28,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         Log.d("TIMEMANAGER ", this.getClass()+" : OnCreate called.");
 
-        setTitle("Activity detail");
+        setTitle("Detail");
         // getting datas
         Intent localIntent = getIntent();
         String activityName = localIntent.getStringExtra("activity_name");

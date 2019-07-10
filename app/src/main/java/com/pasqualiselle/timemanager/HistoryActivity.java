@@ -19,6 +19,7 @@ public class HistoryActivity extends AppCompatActivity {
         Log.d("TIMEMANAGER", this.getClass()+" : onCreate called.");
 
         setContentView(R.layout.activity_history);
+        setTitle("History");
     }
 
     @Override

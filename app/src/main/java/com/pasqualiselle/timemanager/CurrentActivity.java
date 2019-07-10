@@ -38,6 +38,7 @@ public class CurrentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_en_cours);
 
+        setTitle("Current Activity");
         mSharedPreferences = getSharedPreferences(MainActivity.PREF_TIMEMANAGER_KEY,MODE_PRIVATE);
 
         mActivityNameTextView = findViewById(R.id.text_activity_name);
