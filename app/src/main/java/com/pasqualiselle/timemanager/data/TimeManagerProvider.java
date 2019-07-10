@@ -178,6 +178,7 @@ public class TimeManagerProvider extends ContentProvider {
 
     }
 
+
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
@@ -326,9 +327,37 @@ public class TimeManagerProvider extends ContentProvider {
 
     }
 
+    /**
+     *
+     * @param uri the URI to acess Data to delete
+     * @param selection would be an additional filter to the whereClause  (ignored for now)
+     * @param selectionArgs would be the args for the filter additional (ignored for now)
+     * @return number of deleted rows.
+     */
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        //Get readable database
+        SQLiteDatabase database = mTimeManagerDbHelper.getWritableDatabase();
+
+        //This cursor will hold the result of the query
+        int result = 0;
+
+        //Figure out if the URI matcher can match the URI to a specific code
+        int match = sUriMatcher.match(uri);
+
+
+
+        switch (match) {
+            case ACTIVITY_ID:
+                String whereClause = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
+                String[] whereArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                result =  database.delete(TimeManagerContract.InstanceEntry.TABLE_NAME, whereClause, whereArgs);
+                whereClause = TimeManagerContract.ActivityEntry._ID + "=?";
+                result +=  database.delete(TimeManagerContract.ActivityEntry.TABLE_NAME, whereClause, whereArgs);
+            break;
+        }
+
+        return result;
     }
 
     @Override
