@@ -88,12 +88,13 @@ public class DetailsActivity extends AppCompatActivity {
                 };
         String whereSelection = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
         String[] whereParams = { String.valueOf(activityId)};
+        String sortOrder  =  TimeManagerContract.InstanceEntry.COLUMN_END_TIME + " DESC";
         Cursor cursor = getContentResolver().query(
                 TimeManagerContract.InstanceEntry.CONTENT_URI,
                 projection,
                 whereSelection,
                 whereParams,
-                null);
+                sortOrder);
 
         //Find ListView to populate with the activity name data
         ListView detailsListItemsView = findViewById(R.id.listViewItems);

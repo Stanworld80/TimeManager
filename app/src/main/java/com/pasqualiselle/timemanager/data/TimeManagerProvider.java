@@ -148,7 +148,8 @@ public class TimeManagerProvider extends ContentProvider {
                         TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID +
                         " GROUP BY " +
                         TimeManagerContract.InstanceEntry.TABLE_NAME + "." +
-                        TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID);
+                        TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID +
+                        " ORDER BY "+ TimeManagerContract.InstanceEntry.COLUMN_END_TIME +" DESC");
 
                 Log.d("DURATIONS_QUERIES", "query: " + q);
                 cursor = database.rawQuery(q, null);
