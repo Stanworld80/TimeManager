@@ -12,7 +12,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mStartBtn = findViewById(R.id.start_btn);
 
         EditText mEditActivity;
-        mEditActivity = findViewById(R.id.editTextAcitivity);
+        mEditActivity = findViewById(R.id.editTextActivity);
 
         mEditActivity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         EditText mEditActivity;
 
-                        mEditActivity = findViewById(R.id.editTextAcitivity);
+                        mEditActivity = findViewById(R.id.editTextActivity);
                         //to Save the input activity name and store it in preferences
                         mLastInsertedActivityName = mEditActivity.getText().toString();
 
@@ -122,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
      * Get user input from editor and save new activity into database.
      */
     private void insertActivity() {
-        mEditActivity = findViewById(R.id.editTextAcitivity);
+        mEditActivity = findViewById(R.id.editTextActivity);
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         mLastInsertedActivityName = mEditActivity.getText().toString().trim();

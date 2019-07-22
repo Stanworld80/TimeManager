@@ -80,9 +80,8 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-
     <EditText
-        android:id="@+id/editTextAcitivity"
+        android:id="@+id/editTextActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -90,16 +89,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="124dp"
+        android:backgroundTint="@color/cursorColor"
         android:ems="10"
-        android:textCursorDrawable="@drawable/color_cursor"
         android:hint="@string/type_your_activity_here"
         android:inputType="textPersonName"
-        android:backgroundTint="@color/cursorColor"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintBottom_toTopOf="@+id/start_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 
 
 </android.support.constraint.ConstraintLayout>
