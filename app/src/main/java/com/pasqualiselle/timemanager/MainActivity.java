@@ -25,13 +25,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static java.text.DateFormat.getTimeInstance;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int CURRENT_ACTIVITY_REQUEST_CODE = 42;
 
     AutoCompleteTextView mEditActivity;
+    ActivitiesCursorAdapter mActivitiesCursorAdapter;
     String mLastInsertedActivityName;
     Long mLastInsertedActivityId;
 
@@ -49,18 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
         mEditActivity = findViewById(R.id.editTextActivity);
 
-        String selection = "name LIKE ?";
-        String[] selectionArgs = {"%"};
         Cursor cursor = getContentResolver().query(
                 TimeManagerContract.ActivityEntry.CONTENT_URI,
                 null,
-                selection,
-                selectionArgs,
+                null,
+                null,
                 null
         );
 
-        ActivitiesCursorAdapter activitiesCursorAdapter = new ActivitiesCursorAdapter(this, cursor, false);
-        mEditActivity.setAdapter(activitiesCursorAdapter);
+        mActivitiesCursorAdapter = new ActivitiesCursorAdapter(this, cursor, false);
+        mEditActivity.setAdapter(mActivitiesCursorAdapter);
 
         setCurrentDateAndTime();
         goToCurrentActivity();
@@ -102,19 +100,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 0) {
+                String needle = s.toString().trim();
+
+                if (needle.length() > 0) {
+                    needle = needle.replace(' ','%');
+                    mActivitiesCursorAdapter.getCursor().close();
+
                     String selection = "name LIKE ?";
-                    String[] selectionArgs = {"%"  + s + "%"};
-                    Cursor cursor = getContentResolver().query(
+                    String[] selectionArgs = {"%"  + needle + "%"};
+                    Cursor newCursor = getContentResolver().query(
                             TimeManagerContract.ActivityEntry.CONTENT_URI,
                             null,
                             selection,
                             selectionArgs,
                             null
                     );
-                    ActivitiesCursorAdapter theAdapter = (ActivitiesCursorAdapter) mEditActivity.getAdapter();
-                    theAdapter.changeCursor(cursor);
-                    mEditActivity.setAdapter(theAdapter);
+
+                    mActivitiesCursorAdapter.swapCursor(newCursor);
                 }
 
                 mStartBtn.setEnabled(s.toString().length() != 0);
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Thread.sleep(1000);
+                        sleep(1000);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

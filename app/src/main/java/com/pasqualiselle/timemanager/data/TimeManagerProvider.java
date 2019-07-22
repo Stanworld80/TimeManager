@@ -107,6 +107,7 @@ public class TimeManagerProvider extends ContentProvider {
             case INSTANCES:
                 cursor = database.query(TimeManagerContract.InstanceEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
+
                 break;
 
             case ACTIVITY_ID:
