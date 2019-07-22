@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     AutoCompleteTextView mEditActivity;
     ActivitiesCursorAdapter mActivitiesCursorAdapter;
+    Cursor mAutoCompletionCursor;
+
     String mLastInsertedActivityName;
     Long mLastInsertedActivityId;
 
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         mEditActivity = findViewById(R.id.editTextActivity);
 
-        Cursor cursor = getContentResolver().query(
+        mAutoCompletionCursor= getContentResolver().query(
                 TimeManagerContract.ActivityEntry.CONTENT_URI,
                 null,
                 null,
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 
-        mActivitiesCursorAdapter = new ActivitiesCursorAdapter(this, cursor, false);
+        mActivitiesCursorAdapter = new ActivitiesCursorAdapter(this, mAutoCompletionCursor, false);
         mEditActivity.setAdapter(mActivitiesCursorAdapter);
 
         setCurrentDateAndTime();
@@ -96,23 +98,17 @@ public class MainActivity extends AppCompatActivity {
         mEditActivity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                mStartBtn.setEnabled(s.toString().length() != 0);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 String needle = s.toString().trim();
                 if (needle.length() > 0) {
                     needle = needle.replace(' ','%');
-                    //mActivitiesCursorAdapter.getCursor().close();
                     String selection = "name LIKE ?";
                     String[] selectionArgs = {"%" + needle + "%"};
-                    Cursor newCursor = getContentResolver().query(
+                    mAutoCompletionCursor = getContentResolver().query(
                             TimeManagerContract.ActivityEntry.CONTENT_URI,
                             null,
                             selection,
@@ -120,8 +116,16 @@ public class MainActivity extends AppCompatActivity {
                             null
                     );
 
-                    mActivitiesCursorAdapter.swapCursor(newCursor);
+
+
                 }
+
+                mStartBtn.setEnabled(s.toString().length() != 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mActivitiesCursorAdapter.changeCursor(mAutoCompletionCursor);
 
                 mStartBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
