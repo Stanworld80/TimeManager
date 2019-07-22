@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     AutoCompleteTextView mEditActivity;
     ActivitiesCursorAdapter mActivitiesCursorAdapter;
-    Cursor mAutoCompletionCursor;
 
     String mLastInsertedActivityName;
     Long mLastInsertedActivityId;
@@ -48,23 +48,52 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        prepareAutoCompletion();
+        setCurrentDateAndTime();
+        goToCurrentActivity();
+        setHistoryBtn();
 
+    }
+
+    /**
+     * Setting for autocompletion
+     */
+    public void prepareAutoCompletion() {
         mEditActivity = findViewById(R.id.editTextActivity);
-
-        mAutoCompletionCursor= getContentResolver().query(
+        Cursor theInitCursor = getContentResolver().query(
                 TimeManagerContract.ActivityEntry.CONTENT_URI,
                 null,
                 null,
                 null,
                 null
         );
-
-        mActivitiesCursorAdapter = new ActivitiesCursorAdapter(this, mAutoCompletionCursor, false);
+        mActivitiesCursorAdapter = new ActivitiesCursorAdapter(this, theInitCursor, false);
         mEditActivity.setAdapter(mActivitiesCursorAdapter);
+        mActivitiesCursorAdapter.setFilterQueryProvider(
+                new FilterQueryProvider() {
+                    @Override
+                    public Cursor runQuery(CharSequence s) {
+                        Cursor aCursor = null;
+                        if (s != null) {
+                            String needle = s.toString().trim();
+                            if (needle.length() > 0) {
+                                needle = needle.replace(' ', '%');
+                                String selection = "name LIKE ?";
+                                String[] selectionArgs = {"%" + needle + "%"};
+                                aCursor = getContentResolver().query(
+                                        TimeManagerContract.ActivityEntry.CONTENT_URI,
+                                        null,
+                                        selection,
+                                        selectionArgs,
+                                        null
+                                );
+                            }
+                        }
 
-        setCurrentDateAndTime();
-        goToCurrentActivity();
-        setHistoryBtn();
+                        return aCursor;
+                    }
+                }
+        );
 
     }
 
@@ -103,30 +132,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String needle = s.toString().trim();
-                if (needle.length() > 0) {
-                    needle = needle.replace(' ','%');
-                    String selection = "name LIKE ?";
-                    String[] selectionArgs = {"%" + needle + "%"};
-                    mAutoCompletionCursor = getContentResolver().query(
-                            TimeManagerContract.ActivityEntry.CONTENT_URI,
-                            null,
-                            selection,
-                            selectionArgs,
-                            null
-                    );
-
-
-
-                }
+                mActivitiesCursorAdapter.getFilter().filter(s);
+                mActivitiesCursorAdapter.notifyDataSetChanged();
 
                 mStartBtn.setEnabled(s.toString().length() != 0);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                mActivitiesCursorAdapter.changeCursor(mAutoCompletionCursor);
-
                 mStartBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

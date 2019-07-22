@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
 
 public class ActivitiesCursorAdapter extends CursorAdapter {
+
 
     /**
      * @param context     The context
