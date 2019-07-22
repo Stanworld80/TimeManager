@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +12,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pasqualiselle.timemanager.adapters.ActivitiesCursorAdapter;
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
 
 import java.text.DateFormat;
@@ -28,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int CURRENT_ACTIVITY_REQUEST_CODE = 42;
 
-
-    EditText mEditActivity;
+    AutoCompleteTextView mEditActivity;
     String mLastInsertedActivityName;
     Long mLastInsertedActivityId;
 
@@ -43,6 +45,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        mEditActivity = findViewById(R.id.editTextActivity);
+
+        String selection = "name LIKE ?";
+        String[] selectionArgs = {"%"};
+        Cursor cursor = getContentResolver().query(
+                TimeManagerContract.ActivityEntry.CONTENT_URI,
+                null,
+                selection,
+                selectionArgs,
+                null
+        );
+
+        ActivitiesCursorAdapter activitiesCursorAdapter = new ActivitiesCursorAdapter(this, cursor, false);
+        mEditActivity.setAdapter(activitiesCursorAdapter);
 
         setCurrentDateAndTime();
         goToCurrentActivity();
@@ -77,9 +95,6 @@ public class MainActivity extends AppCompatActivity {
         final Button mStartBtn;
         mStartBtn = findViewById(R.id.start_btn);
 
-        EditText mEditActivity;
-        mEditActivity = findViewById(R.id.editTextActivity);
-
         mEditActivity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,6 +102,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count > 0) {
+                    String selection = "name LIKE ?";
+                    String[] selectionArgs = {"%"  + s + "%"};
+                    Cursor cursor = getContentResolver().query(
+                            TimeManagerContract.ActivityEntry.CONTENT_URI,
+                            null,
+                            selection,
+                            selectionArgs,
+                            null
+                    );
+                    ActivitiesCursorAdapter theAdapter = (ActivitiesCursorAdapter) mEditActivity.getAdapter();
+                    theAdapter.changeCursor(cursor);
+                    mEditActivity.setAdapter(theAdapter);
+                }
+
                 mStartBtn.setEnabled(s.toString().length() != 0);
             }
 
@@ -121,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
      * Get user input from editor and save new activity into database.
      */
     private void insertActivity() {
-        mEditActivity = findViewById(R.id.editTextActivity);
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         mLastInsertedActivityName = mEditActivity.getText().toString().trim();
@@ -159,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  setting the Date in the textView_day_of_the_week View
-     *  and set a dynamic Time in the  text_view_date View
+     * setting the Date in the textView_day_of_the_week View
+     * and set a dynamic Time in the  text_view_date View
      */
     public void setCurrentDateAndTime() {
         // setting the First line of the date : exemple : "lundi 22 avril 2019"

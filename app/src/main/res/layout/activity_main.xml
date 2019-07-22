@@ -80,7 +80,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/editTextActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
