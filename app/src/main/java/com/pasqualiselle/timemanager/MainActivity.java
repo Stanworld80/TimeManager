@@ -100,14 +100,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String needle = s.toString().trim();
 
+                mStartBtn.setEnabled(s.toString().length() != 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String needle = s.toString().trim();
                 if (needle.length() > 0) {
                     needle = needle.replace(' ','%');
-                    mActivitiesCursorAdapter.getCursor().close();
-
+                    //mActivitiesCursorAdapter.getCursor().close();
                     String selection = "name LIKE ?";
-                    String[] selectionArgs = {"%"  + needle + "%"};
+                    String[] selectionArgs = {"%" + needle + "%"};
                     Cursor newCursor = getContentResolver().query(
                             TimeManagerContract.ActivityEntry.CONTENT_URI,
                             null,
@@ -119,11 +123,6 @@ public class MainActivity extends AppCompatActivity {
                     mActivitiesCursorAdapter.swapCursor(newCursor);
                 }
 
-                mStartBtn.setEnabled(s.toString().length() != 0);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 mStartBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
