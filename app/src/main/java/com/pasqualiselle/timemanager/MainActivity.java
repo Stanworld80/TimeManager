@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     AutoCompleteTextView mEditActivity;
     ActivitiesCursorAdapter mActivitiesCursorAdapter;
-
     String mLastInsertedActivityName;
     Long mLastInsertedActivityId;
 
@@ -44,15 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         prepareAutoCompletion();
         setCurrentDateAndTime();
         goToCurrentActivity();
         setHistoryBtn();
-
     }
 
     /**
@@ -132,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mActivitiesCursorAdapter.getFilter().filter(s);
+                mActivitiesCursorAdapter.getFilter().filter(s); // filtering the autocompletion list
                 mActivitiesCursorAdapter.notifyDataSetChanged();
 
                 mStartBtn.setEnabled(s.toString().length() != 0);
