@@ -5,4 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="backgroundActivity">#e1e7f0</color>
     <color name="cursorColor">#45494f</color>
+    <color name="buttonColor1">#dadfe8</color>
+    <color name="buttonColor2">#abb1ba</color>
+    <color name="buttonColor3">#777f8c</color>
+
 </resources>

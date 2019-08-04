@@ -29,17 +29,19 @@ public class TimeManagerProvider extends ContentProvider {
     /**
      * URI matcher code for the content URI for the tables
      */
-    private static final int ACTIVITIES = 100;
-    private static final int INSTANCES = 200;
-    private static final int ACTIVITIES_DURATIONS = 100200;
+    private static final int URIMATCHCODE_ACTIVITIES = 100;
+    private static final int URIMATCHCODE_INSTANCES = 200;
+    private static final int URIMATCHCODE_ACTIVITIES_DURATIONS = 100200;
 
 
     /**
      * URI matcher code for the content URI for a single ACTIVITY in the ACTIVITIES table
      * URI matcher code for the content URI for a single INSTANCE in the INSTANCES table
      */
-    private static final int ACTIVITY_ID = 101;
-    private static final int INSTANCE_ID = 201;
+    private static final int URIMATCHCODE_ACTIVITY_ID = 101;
+    private static final int URIMATCHCODE_INSTANCE_ID = 201;
+
+
 
     /**
      * UriMatcher object to match a content URI to a corresponding code.
@@ -54,11 +56,11 @@ public class TimeManagerProvider extends ContentProvider {
         // The calls to addURI() go here, for all of the content URI patterns that the provider
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES, ACTIVITIES);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES, INSTANCES);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES + "/#", ACTIVITY_ID);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES + "/#", INSTANCE_ID);
-        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES_DURATION, ACTIVITIES_DURATIONS);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES, URIMATCHCODE_ACTIVITIES);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES, URIMATCHCODE_INSTANCES);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES + "/#", URIMATCHCODE_ACTIVITY_ID);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_INSTANCES + "/#", URIMATCHCODE_INSTANCE_ID);
+        sUriMatcher.addURI(TimeManagerContract.CONTENT_AUTHORITY, TimeManagerContract.PATH_ACTIVITIES_DURATION, URIMATCHCODE_ACTIVITIES_DURATIONS);
     }
     /**
      * {@link ContentProvider} for TimeManager app.
@@ -95,7 +97,7 @@ public class TimeManagerProvider extends ContentProvider {
 
         switch (match) {
 
-            case ACTIVITIES:
+            case URIMATCHCODE_ACTIVITIES:
                 //For the ACTIVITIES code, query the ACTIVITIES table directly with the give
                 //projection,selection,selection arguments,and sort order.The cursor
                 //could contain multiple rows of the pets table
@@ -104,13 +106,13 @@ public class TimeManagerProvider extends ContentProvider {
                         null, null, sortOrder);
                 break;
 
-            case INSTANCES:
+            case URIMATCHCODE_INSTANCES:
                 cursor = database.query(TimeManagerContract.InstanceEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
 
                 break;
 
-            case ACTIVITY_ID:
+            case URIMATCHCODE_ACTIVITY_ID:
                 // For the ACTIVITY_ID code, extract out the ID from the URI.
                 // For an example URI such as "content://com.example.android.activities/activities/3",
                 // the selection will be "_id=?" and the selection argument will be a
@@ -127,7 +129,7 @@ public class TimeManagerProvider extends ContentProvider {
                 cursor = database.query(TimeManagerContract.ActivityEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
-            case ACTIVITIES_DURATIONS:
+            case URIMATCHCODE_ACTIVITIES_DURATIONS:
                 String q = ("SELECT " + TimeManagerContract.ActivityEntry.TABLE_NAME + "." +
                         TimeManagerContract.ActivityEntry._ID +
                         " , " + TimeManagerContract.InstanceEntry.COLUMN_START_TIME +
@@ -194,9 +196,9 @@ public class TimeManagerProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
 
-            case ACTIVITIES:
+            case URIMATCHCODE_ACTIVITIES:
                 return getOrInsertActivity(uri, contentValues);
-            case INSTANCES:
+            case URIMATCHCODE_INSTANCES:
                 return insertInstance(uri, contentValues);
             default:
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
@@ -350,7 +352,7 @@ public class TimeManagerProvider extends ContentProvider {
 
 
         switch (match) {
-            case ACTIVITY_ID:
+            case URIMATCHCODE_ACTIVITY_ID:
                 String whereClause = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
                 String[] whereArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 result =  database.delete(TimeManagerContract.InstanceEntry.TABLE_NAME, whereClause, whereArgs);

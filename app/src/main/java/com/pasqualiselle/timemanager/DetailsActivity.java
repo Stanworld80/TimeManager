@@ -31,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity {
         setTitle("Detail");
         // getting datas
         Intent localIntent = getIntent();
-        String activityName = localIntent.getStringExtra("activity_name");
+        final String activityName = localIntent.getStringExtra("activity_name");
         final int activityId = localIntent.getIntExtra("activity_id", 0);
 
         // settings views
@@ -47,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder( DetailsActivity.this, R.style.AlertDialogStyle );
                 builder.setTitle( "DELETE DATA" )
-                        .setMessage("Are you sure you want to delete" + " activity data?")
+                        .setMessage("Are you sure you want to delete " + "'"+activityName+"'" +" data?")
                         .setPositiveButton( "YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -89,6 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
         String whereSelection = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
         String[] whereParams = { String.valueOf(activityId)};
         String sortOrder  =  TimeManagerContract.InstanceEntry.COLUMN_END_TIME + " DESC";
+
         Cursor cursor = getContentResolver().query(
                 TimeManagerContract.InstanceEntry.CONTENT_URI,
                 projection,
