@@ -132,8 +132,6 @@ public class TimeManagerProvider extends ContentProvider {
             case URIMATCHCODE_ACTIVITIES_DURATIONS:
                 String q = ("SELECT " + TimeManagerContract.ActivityEntry.TABLE_NAME + "." +
                         TimeManagerContract.ActivityEntry._ID +
-                        " , " + TimeManagerContract.InstanceEntry.COLUMN_START_TIME +
-                        " , " + TimeManagerContract.InstanceEntry.COLUMN_END_TIME +
                         " , " + TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME +
                         " , SUM(" +
                         TimeManagerContract.InstanceEntry.COLUMN_END_TIME +
@@ -160,13 +158,9 @@ public class TimeManagerProvider extends ContentProvider {
                 //for debug purposes,look at LogCat
                 while (cursor.moveToNext()) {
                     String activityName = cursor.getString(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivityEntry.COLUMN_ACTIVITY_NAME));
-                    long start = cursor.getLong(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_START_TIME));
-                    long end = cursor.getLong(cursor.getColumnIndexOrThrow(TimeManagerContract.InstanceEntry.COLUMN_END_TIME));
                     long duration = cursor.getLong(cursor.getColumnIndexOrThrow(TimeManagerContract.ActivitiesDuration.COLUMN_DURATION));
                     Log.d("DURATIONS_QUERIES",
                             "name: " + activityName +
-                                    "\tstart:" + start +
-                                    "\tend:" + end +
                                     "\tdurationcount:" + duration);
 
                 }
