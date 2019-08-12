@@ -58,4 +58,53 @@
         android:onClick="terminateChronometer"
         android:elegantTextHeight="true"
         android:text="Terminate" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-3dp"
+        android:layout_marginRight="-3dp"
+        android:layout_marginBottom="195dp" />
+
+    <TextView
+        android:id="@+id/textViewMin"
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="197dp"
+        android:layout_toStartOf="@+id/switch1"
+        android:layout_toLeftOf="@+id/switch1"
+        android:text="min" />
+
+    <EditText
+        android:id="@+id/editTimer"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginRight="-1dp"
+        android:layout_marginBottom="190dp"
+        android:layout_toStartOf="@+id/textViewMin"
+        android:layout_toLeftOf="@+id/textViewMin"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textViewSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="200dp"
+        android:layout_toStartOf="@+id/editTimer"
+        android:layout_toLeftOf="@+id/editTimer"
+        android:text="Sound" />
+
 </RelativeLayout>
