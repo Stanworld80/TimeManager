@@ -44,13 +44,13 @@
         android:id="@+id/editTextActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/cursorColor"
         android:ems="10"
-        android:layout_gravity="center_horizontal"
         android:hint="@string/type_your_activity_here"
+        android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        android:textCursorDrawable="@drawable/color_cursor"
-        />
+        android:textCursorDrawable="@drawable/color_cursor" />
     <android.support.v4.widget.Space android:layout_height="50dp"
         android:layout_width="match_parent" />
 
