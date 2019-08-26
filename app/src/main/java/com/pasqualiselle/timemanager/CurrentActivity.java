@@ -97,7 +97,6 @@ public class CurrentActivity extends AppCompatActivity {
         mRingSwitcher.setChecked(false);
     }
 
-
     public void setRingerSwitch() {
         mRingSwitcher = findViewById(R.id.switch1);
         mRingSwitcher.setOnCheckedChangeListener(
