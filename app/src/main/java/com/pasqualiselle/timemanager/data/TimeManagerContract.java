@@ -22,10 +22,8 @@ public class TimeManagerContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
 
-    public static final String PATH_ACTIVITIES = "activities";
-
-    public static final String PATH_INSTANCES  = "instances";
-
+    public static final String PATH_ACTIVITIES          = "activities";
+    public static final String PATH_INSTANCES           = "instances";
     public static final String PATH_ACTIVITIES_DURATION = "activities_duration";
 
 

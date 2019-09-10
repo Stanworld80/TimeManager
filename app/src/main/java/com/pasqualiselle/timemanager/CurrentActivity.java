@@ -158,11 +158,10 @@ public class CurrentActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Switch timerSwitch = findViewById(R.id.switch1);
+                    TextView timerTextView = findViewById(R.id.editTimer);
                     while (!isInterrupted()) {
-                        Switch timerSwitch = findViewById(R.id.switch1);
-                        TextView timerTextView = findViewById(R.id.editTimer);
                         int timerValue = Integer.valueOf(timerTextView.getText().toString());
-
                         if (timerSwitch.isChecked() && timerValue >= 1) {
                             sleep(60000 * timerValue);
                             runOnUiThread(new Runnable() {
