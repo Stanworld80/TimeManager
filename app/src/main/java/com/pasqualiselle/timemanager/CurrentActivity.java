@@ -88,11 +88,11 @@ public class CurrentActivity extends AppCompatActivity {
                     }
                 }
         );
-         mediaPlayerRinger = MediaPlayer.create(getApplication(), R.raw.ring);
+        mediaPlayerRinger = MediaPlayer.create(getApplication(), R.raw.ring);
         setRingerSwitch();
     }
-    public void onDestroy()
-    {
+
+    public void onDestroy() {
         super.onDestroy();
         mRingSwitcher.setChecked(false);
     }
@@ -106,9 +106,9 @@ public class CurrentActivity extends AppCompatActivity {
                         if (isChecked) {
                             setRinger();
                             mRingerThread.start();
-                        }
-                        else
+                        } else
                             mRingerThread.interrupt();
+
                     }
                 }
         );
@@ -153,28 +153,45 @@ public class CurrentActivity extends AppCompatActivity {
         finish();
     }
 
+
     public void setRinger() {
         mRingerThread = new Thread() {
+            private void offRinger()
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mediaPlayerRinger.stop();
+                        mRingSwitcher.setChecked(false);
+                    }
+                });
+            }
             @Override
             public void run() {
+
                 try {
                     Switch timerSwitch = findViewById(R.id.switch1);
                     TextView timerTextView = findViewById(R.id.editTimer);
                     while (!isInterrupted()) {
-                        int timerValue = Integer.valueOf(timerTextView.getText().toString());
-                        if (timerSwitch.isChecked() && timerValue >= 1) {
-                            sleep(60000 * timerValue);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
+                        String timertxt = timerTextView.getText().toString();
 
-                                    mediaPlayerRinger.start();
-                                }
-                            });
+                        if (timertxt.matches("\\d+")) { // check if match only digit, and at least one
+                            int timerValue = Integer.valueOf(timertxt);
+                            if (timerSwitch.isChecked() && timerValue >= 1) {
+                                sleep(60000 * timerValue);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mediaPlayerRinger.start();
+                                    }
+                                });
+                            }
                         }
+                        else
+                            offRinger();
                     }
                 } catch (InterruptedException e) {
-                    mediaPlayerRinger.stop();
+                    offRinger();
                 }
             }
         };
