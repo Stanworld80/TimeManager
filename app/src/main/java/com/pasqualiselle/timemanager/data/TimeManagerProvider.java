@@ -343,15 +343,17 @@ public class TimeManagerProvider extends ContentProvider {
         //Figure out if the URI matcher can match the URI to a specific code
         int match = sUriMatcher.match(uri);
 
-
+        String whereClause;
+        String[] whereArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
         switch (match) {
             case URIMATCHCODE_ACTIVITY_ID:
-                String whereClause = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
-                String[] whereArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                whereClause = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
                 result =  database.delete(TimeManagerContract.InstanceEntry.TABLE_NAME, whereClause, whereArgs);
-                whereClause = TimeManagerContract.ActivityEntry._ID + "=?";
                 result +=  database.delete(TimeManagerContract.ActivityEntry.TABLE_NAME, whereClause, whereArgs);
+            case URIMATCHCODE_INSTANCE_ID:
+                whereClause = TimeManagerContract.InstanceEntry._ID + "=?";
+                result =  database.delete(TimeManagerContract.InstanceEntry.TABLE_NAME, whereClause, whereArgs);
             break;
         }
 

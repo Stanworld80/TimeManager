@@ -82,6 +82,10 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
+    public void deleteInstance(int instanceID)
+    {
+
+    }
 
     public void displayStats() {
 
