@@ -84,6 +84,9 @@ public class DetailsCursorAdapter extends CursorAdapter {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Uri dataToDelete = Uri.withAppendedPath(TimeManagerContract.InstanceEntry.CONTENT_URI, "/" + instanceId);
                                 context.getContentResolver().delete(dataToDelete, null, null);
+                                DetailsActivity theDetailActivity = (DetailsActivity)context;
+                                theDetailActivity.displayInstancesList();
+
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
