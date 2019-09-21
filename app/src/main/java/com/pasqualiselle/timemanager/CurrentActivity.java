@@ -69,17 +69,15 @@ public class CurrentActivity extends AppCompatActivity {
         mChronometer.setBase(startTime);
         mChronometer.start();
 
-        setRingerSwitch();
 
+        TextView editTimer = findViewById(R.id.editTimer);
+
+        setRingerSwitch();
         boolean ringerState = mSharedPreferences.getBoolean(MainActivity.PREF_KEY_CURRENT_RINGERSTATE, false);
         Log.d("TestRINGER", "ringerState:"+ringerState);
         mRingSwitcher.setChecked(ringerState);
 
         setRingerThread();
-
-
-
-        TextView editTimer = findViewById(R.id.editTimer);
 
         editTimer.addTextChangedListener(
                 new TextWatcher() {
@@ -100,7 +98,9 @@ public class CurrentActivity extends AppCompatActivity {
                     }
                 }
         );
+
         mediaPlayerRinger = MediaPlayer.create(getApplication(), R.raw.ring);
+
     }
 
 
@@ -135,6 +135,7 @@ public class CurrentActivity extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
     public void terminateChronometer(View view) {
