@@ -350,6 +350,7 @@ public class TimeManagerProvider extends ContentProvider {
             case URIMATCHCODE_ACTIVITY_ID:
                 whereClause = TimeManagerContract.InstanceEntry.COLUMN_ACTIVITY_ID + "=?";
                 result =  database.delete(TimeManagerContract.InstanceEntry.TABLE_NAME, whereClause, whereArgs);
+                whereClause = TimeManagerContract.ActivityEntry._ID + "=?";
                 result +=  database.delete(TimeManagerContract.ActivityEntry.TABLE_NAME, whereClause, whereArgs);
             case URIMATCHCODE_INSTANCE_ID:
                 whereClause = TimeManagerContract.InstanceEntry._ID + "=?";
