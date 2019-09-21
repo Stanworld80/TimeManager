@@ -11,17 +11,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pasqualiselle.timemanager.data.TimeManagerContract;
-
-import java.text.SimpleDateFormat;
 
 public class CurrentActivity extends AppCompatActivity {
 
@@ -34,7 +30,7 @@ public class CurrentActivity extends AppCompatActivity {
 
 
     private Chronometer mChronometer;
-    private boolean running;
+    private boolean running = false;
     private long startTime;
     private long mStartDateTime;
     private long mEndDateTime;
@@ -45,6 +41,7 @@ public class CurrentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("TIMEMANAGER", this.getClass() + " : onCreate called.");
         setContentView(R.layout.activity_en_cours);
 
         setTitle("Current Activity");
@@ -60,14 +57,27 @@ public class CurrentActivity extends AppCompatActivity {
         mChronometer = findViewById(R.id.chronometer);
         mChronometer.setFormat(" %s");
 
+        running = mSharedPreferences.getBoolean(MainActivity.PREF_KEY_CURRENT_RUNNING, false);
         if (!running) {
-            mChronometer.setBase(SystemClock.elapsedRealtime());
-            mChronometer.start();
-            running = true;
             startTime = SystemClock.elapsedRealtime();
             mStartDateTime = System.currentTimeMillis();
+            running = true;
+        } else {
+            startTime = mSharedPreferences.getLong(MainActivity.PREF_KEY_CURRENT_STARTTIME, 0);
+            mStartDateTime = mSharedPreferences.getLong(MainActivity.PREF_KEY_CURRENT_MSTARTDATETIME, 0);
         }
-        setRinger();
+        mChronometer.setBase(startTime);
+        mChronometer.start();
+
+        setRingerSwitch();
+
+        boolean ringerState = mSharedPreferences.getBoolean(MainActivity.PREF_KEY_CURRENT_RINGERSTATE, false);
+        Log.d("TestRINGER", "ringerState:"+ringerState);
+        mRingSwitcher.setChecked(ringerState);
+
+        setRingerThread();
+
+
 
         TextView editTimer = findViewById(R.id.editTimer);
 
@@ -75,11 +85,13 @@ public class CurrentActivity extends AppCompatActivity {
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d("TestRINGER:", "beforeTextChanged  ");
                         mRingSwitcher.setChecked(false);
                     }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d("TestRINGER:", "onTextChanged  ");
                         mRingSwitcher.setChecked(false);
                     }
 
@@ -89,12 +101,20 @@ public class CurrentActivity extends AppCompatActivity {
                 }
         );
         mediaPlayerRinger = MediaPlayer.create(getApplication(), R.raw.ring);
-        setRingerSwitch();
     }
 
+
     public void onDestroy() {
-        super.onDestroy();
+
+        Log.d("TIMEMANAGER", this.getClass() + " : onDestroy called.");
+        mSharedPreferences.edit().putBoolean(MainActivity.PREF_KEY_CURRENT_RUNNING, running).apply();
+        if (running) {
+            mSharedPreferences.edit().putLong(MainActivity.PREF_KEY_CURRENT_STARTTIME, startTime).apply();
+            mSharedPreferences.edit().putLong(MainActivity.PREF_KEY_CURRENT_MSTARTDATETIME, mStartDateTime).apply();
+            mSharedPreferences.edit().putBoolean(MainActivity.PREF_KEY_CURRENT_RINGERSTATE, mRingSwitcher.isChecked()).apply();
+        }
         mRingSwitcher.setChecked(false);
+        super.onDestroy();
     }
 
     public void setRingerSwitch() {
@@ -104,10 +124,13 @@ public class CurrentActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
-                            setRinger();
+                            Log.d("TestRINGER: onchange", "onCheckedChanged: to "+isChecked);
+                            setRingerThread();
                             mRingerThread.start();
-                        } else
+                        } else {
+                            Log.d("TestRINGER: onchange", "onCheckedChanged: to " + isChecked);
                             mRingerThread.interrupt();
+                        }
 
                     }
                 }
@@ -115,7 +138,7 @@ public class CurrentActivity extends AppCompatActivity {
     }
 
     public void terminateChronometer(View view) {
-
+        running = false;
         mRingSwitcher.setChecked(false);
         mChronometer.stop();
         mEndDateTime = mStartDateTime + (SystemClock.elapsedRealtime() - startTime);
@@ -154,10 +177,9 @@ public class CurrentActivity extends AppCompatActivity {
     }
 
 
-    public void setRinger() {
+    public void setRingerThread() {
         mRingerThread = new Thread() {
-            private void offRinger()
-            {
+            private void offRinger() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -166,6 +188,7 @@ public class CurrentActivity extends AppCompatActivity {
                     }
                 });
             }
+
             @Override
             public void run() {
 
@@ -186,8 +209,7 @@ public class CurrentActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }
-                        else
+                        } else
                             offRinger();
                     }
                 } catch (InterruptedException e) {
@@ -196,5 +218,30 @@ public class CurrentActivity extends AppCompatActivity {
             }
         };
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("TIMEMANAGER", this.getClass() + " : onResume called.");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TIMEMANAGER", this.getClass() + " : onRestart called.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TIMEMANAGER ", this.getClass() + " : onPause called.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TIMEMANAGER", this.getClass() + " : onStop called.");
+    }
+
 
 }

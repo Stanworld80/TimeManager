@@ -44,10 +44,20 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREF_TIMEMANAGER_KEY = "TIMEMANAGER_PREFERENCES";
     public static final String PREF_KEY_CURRENT_ACTIVITY_NAME = "PREF_KEY_CURRENT_ACTIVITY_NAME";
     public static final String PREF_KEY_CURRENT_ACTIVITY_ID = "PREF_KEY_CURRENT_ACTIVITY_ID";
+    public static final String PREF_KEY_CURRENT_RUNNING = "PREF_KEY_CURRENT_RUNNING";
+    public static final String PREF_KEY_CURRENT_STARTTIME = "PREF_KEY_CURRENT_STARTTIME";
+    public static final String PREF_KEY_CURRENT_MSTARTDATETIME = "PREF_KEY_CURRENT_MSTARTDATETIME";
+    public static final String PREF_KEY_CURRENT_RINGERSTATE = "PREF_KEY_CURRENT_RINGERSTATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("TIMEMANAGER", this.getClass() + " : onCreate called.");
+        mPreferences = getSharedPreferences(PREF_TIMEMANAGER_KEY, MODE_PRIVATE);
+        mPreferences.edit().putBoolean(MainActivity.PREF_KEY_CURRENT_RUNNING, false).apply();
+        mPreferences.edit().putBoolean(MainActivity.PREF_KEY_CURRENT_RINGERSTATE, false).apply();
+
         setContentView(R.layout.activity_main);
 
         mEditActivity = findViewById(R.id.editTextActivity);
@@ -55,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setDropDownSoftinput();
         setCurrentDateAndTime();
         goToCurrentActivity();
+
         setHistoryBtn();
     }
 
@@ -169,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                         mLastInsertedActivityName = mEditActivity.getText().toString();
 
                         insertActivity();
-                        mPreferences = getSharedPreferences(PREF_TIMEMANAGER_KEY, MODE_PRIVATE);
+
                         mPreferences.edit().putString(PREF_KEY_CURRENT_ACTIVITY_NAME, mLastInsertedActivityName).apply();
                         mPreferences.edit().putLong(PREF_KEY_CURRENT_ACTIVITY_ID, mLastInsertedActivityId).apply();
 
@@ -268,4 +279,29 @@ public class MainActivity extends AppCompatActivity {
         t.start();
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("TIMEMANAGER", this.getClass()+" : onRestart called.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TIMEMANAGER ", this.getClass()+" : onPause called.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("TIMEMANAGER", this.getClass()+" : onStop called.");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("TIMEMANAGER", this.getClass()+" : onDestroy called.");
+    }
+
 }
