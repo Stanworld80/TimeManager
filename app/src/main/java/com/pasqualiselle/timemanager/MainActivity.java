@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Log.d("TIMEMANAGER", this.getClass() + " : onCreate called.");
+
+
         mPreferences = getSharedPreferences(PREF_TIMEMANAGER_KEY, MODE_PRIVATE);
         mPreferences.edit().putBoolean(MainActivity.PREF_KEY_CURRENT_RUNNING, false).apply();
         mPreferences.edit().putBoolean(MainActivity.PREF_KEY_CURRENT_RINGERSTATE, false).apply();
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mEditActivity = findViewById(R.id.editTextActivity);
+
         prepareAutoCompletion();
         setDropDownSoftinput();
         setCurrentDateAndTime();
